@@ -2,6 +2,23 @@ let isRepeatingErrors = false;
 let currentErrorExamples = [];
 let currentErrorIndex = 0;
 
+// Инициализация данных с проверкой
+let currentLanguage = localStorage.getItem('language') || 'ru';
+let currentTheme = localStorage.getItem('theme') || 'light';
+let level = parseInt(localStorage.getItem('level')) || 1;
+let exp = parseInt(localStorage.getItem('exp')) || 0;
+let errorLog = JSON.parse(localStorage.getItem('errorLog')) || [];
+let achievements = JSON.parse(localStorage.getItem('achievements')) || [];
+let stats = JSON.parse(localStorage.getItem('stats')) || { correct: 0, incorrect: 0, total: 0 };
+let volume = parseFloat(localStorage.getItem('volume')) || 0.5;
+
+// Проверка корректности данных
+if (!Array.isArray(errorLog)) errorLog = [];
+if (!Array.isArray(achievements)) achievements = [];
+if (!stats || typeof stats.correct !== 'number' || typeof stats.incorrect !== 'number' || typeof stats.total !== 'number') {
+    stats = { correct: 0, incorrect: 0, total: 0 };
+}
+
 const TEXTS = {
     ru: {
         title: "Математический тренажёр",
@@ -60,15 +77,6 @@ const TEXTS = {
         voiceInput: "Voice Input"
     }
 };
-
-let currentLanguage = localStorage.getItem('language') || 'ru';
-let currentTheme = localStorage.getItem('theme') || 'light';
-let level = parseInt(localStorage.getItem('level')) || 1;
-let exp = parseInt(localStorage.getItem('exp')) || 0;
-let errorLog = JSON.parse(localStorage.getItem('errorLog')) || [];
-let achievements = JSON.parse(localStorage.getItem('achievements')) || [];
-let stats = JSON.parse(localStorage.getItem('stats')) || { correct: 0, incorrect: 0, total: 0 };
-let volume = parseFloat(localStorage.getItem('volume')) || 0.5;
 
 const correctSound = new Audio('https://www.soundjay.com/buttons/button-3.mp3');
 const wrongSound = new Audio('https://www.soundjay.com/buttons/button-2.mp3');
@@ -184,6 +192,7 @@ function generateExample() {
 }
 
 let currentExample = null;
+let startTime = null;
 
 function checkAnswer() {
     const userAnswer = parseFloat(document.querySelector('#answerInput').value);
@@ -192,12 +201,16 @@ function checkAnswer() {
     if (!currentExample && !isRepeatingErrors) {
         currentExample = generateExample();
         if (!currentExample) return;
+        startTime = Date.now();
     }
 
     const correctAnswer = isRepeatingErrors ? currentErrorExamples[currentErrorIndex].answer : currentExample.answer;
     const feedback = document.querySelector('#feedback');
 
     if (Math.abs(userAnswer - correctAnswer) < 0.01) {
+        const endTime = Date.now();
+        const timeTaken = (endTime - startTime) / 1000;
+
         feedback.textContent = TEXTS[currentLanguage].correct;
         feedback.style.color = 'green';
         correctSound.play();
@@ -215,7 +228,7 @@ function checkAnswer() {
 
         if (isRepeatingErrors) {
             currentErrorExamples.splice(currentErrorIndex, 1);
-            errorLog = errorLog.filter((_, index) => index !== currentErrorIndex);
+            errorLog.splice(currentErrorIndex, 1);
             localStorage.setItem('errorLog', JSON.stringify(errorLog));
             updateErrorLog();
             updateRecommendations();
@@ -231,8 +244,12 @@ function checkAnswer() {
             }
         } else {
             currentExample = null;
+            startTime = null;
         }
     } else {
+        const endTime = Date.now();
+        const timeTaken = (endTime - startTime) / 1000;
+
         feedback.textContent = TEXTS[currentLanguage].incorrect;
         feedback.style.color = 'red';
         wrongSound.play();
@@ -242,7 +259,11 @@ function checkAnswer() {
         updateChart();
 
         if (!isRepeatingErrors) {
-            const errorEntry = { example: currentExample.example, answer: currentExample.answer };
+            const errorEntry = {
+                example: currentExample.example,
+                answer: currentExample.answer,
+                time: timeTaken
+            };
             errorLog.push(errorEntry);
             localStorage.setItem('errorLog', JSON.stringify(errorLog));
             updateErrorLog();
@@ -260,6 +281,7 @@ function startTraining() {
         currentErrorIndex = 0;
     }
     currentExample = null;
+    startTime = null;
     document.querySelector('#answerInput').value = '';
     document.querySelector('#feedback').textContent = '';
     generateExample();
@@ -267,7 +289,7 @@ function startTraining() {
 
 function repeatErrors() {
     if (errorLog.length === 0) {
-        alert('Журнал ошибок пуст!');
+        alert(currentLanguage === 'ru' ? 'Журнал ошибок пуст!' : 'Error log is empty!');
         return;
     }
 
@@ -276,6 +298,7 @@ function repeatErrors() {
     currentErrorIndex = 0;
     document.querySelector('#answerInput').value = '';
     document.querySelector('#feedback').textContent = '';
+    startTime = Date.now();
     generateExample();
 }
 
@@ -293,7 +316,7 @@ function updateErrorLog() {
         errorLogDiv.innerHTML += '<p>Ошибок нет.</p>';
     } else {
         errorLog.forEach((entry, index) => {
-            errorLogDiv.innerHTML += `<p>${index + 1}. ${entry.example} (Правильный ответ: ${entry.answer})</p>`;
+            errorLogDiv.innerHTML += `<p>${index + 1}. ${entry.example} (Правильно: ${entry.answer}, Время: ${entry.time.toFixed(2)} сек)</p>`;
         });
     }
 }
