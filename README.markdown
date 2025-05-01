@@ -33,7 +33,7 @@
 4. Разместите на GitHub Pages:
    ```bash
    git add .
-   git commit -m "Оптимизация перед деплоем"
+   git commit -m
    git push origin main
    ```
 
