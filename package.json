@@ -1,0 +1,15 @@
+{
+  "name": "math-trainer",
+  "version": "1.0.0",
+  "description": "Интерактивный тренажёр арифметики с мультиязычной поддержкой и оффлайн-режимом.",
+  "main": "index.html",
+  "scripts": {
+    "build": "terser script.js -o script.min.js && cssnano styles.css styles.min.css"
+  },
+  "devDependencies": {
+    "terser": "^5.16.1",
+    "cssnano": "^5.1.14",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0"
+  }
+}

@@ -1,0 +1,1189 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Тренажёр арифметики для улучшения навыков счёта. Таблицы умножения, сложение, вычитание, деление и проценты.">
+    <meta property="og:title" content="Умный тренажёр арифметики">
+    <meta property="og:description" content="Интерактивный тренажёр для тренировки арифметики с мультиязычной поддержкой и оффлайн-режимом.">
+    <meta property="og:image" content="/icon-512x512.png">
+    <title>Умный тренажёр арифметики</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/icon-192x192.png" type="image/png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #f0f0f0, #d9e4f5);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        select, button, input[type="number"] {
+            padding: 12px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            transition: all 0.3s;
+        }
+        select:focus, button:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+        input[type="number"] {
+            width: 120px;
+        }
+        input[type="range"] {
+            width: 200px;
+            vertical-align: middle;
+            cursor: pointer;
+            -webkit-appearance: none;
+            background: #ddd;
+            border-radius: 10px;
+            height: 8px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        #task {
+            font-size: 24px;
+            margin: 20px 0;
+            color: #444;
+        }
+        #result, #motivation {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        #stats, #errorLog, #recommendations, #achievements, #progressChartContainer, #moduleStats {
+            margin-top: 20px;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            background: #fafafa;
+        }
+        #progressChartContainer {
+            max-height: 300px;
+        }
+        button {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #0056b3, #003d82);
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .highlight {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .achievement {
+            color: #28a745;
+            font-weight: bold;
+            animation: achievementPop 0.5s;
+        }
+        @keyframes achievementPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .correct-answer {
+            animation: correctPulse 0.5s;
+        }
+        .wrong-answer {
+            animation: wrongPulse 0.5s;
+        }
+        @keyframes correctPulse {
+            0% { background-color: #e6ffe6; }
+            50% { background-color: #a3ffa3; }
+            100% { background-color: #e6ffe6; }
+        }
+        @keyframes wrongPulse {
+            0% { background-color: #ffe6e6; }
+            50% { background-color: #ff9999; }
+            100% { background-color: #ffe6e6; }
+        }
+        #tour {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            max-width: 300px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        #resetProgress {
+            background: linear-gradient(135deg, #ff6666, #cc3333);
+        }
+        #resetProgress:hover {
+            background: linear-gradient(135deg, #cc3333, #b32d2d);
+        }
+        #exportStats {
+            background: linear-gradient(135deg, #66cc66, #33aa33);
+        }
+        #exportStats:hover {
+            background: linear-gradient(135deg, #33aa33, #2d912d);
+        }
+        #voiceInput {
+            background: linear-gradient(135deg, #6666ff, #3333cc);
+        }
+        #voiceInput:hover {
+            background: linear-gradient(135deg, #3333cc, #2d2db3);
+        }
+        #practiceErrors {
+            background: linear-gradient(135deg, #ff9900, #cc7700);
+        }
+        #practiceErrors:hover {
+            background: linear-gradient(135deg, #cc7700, #b36a00);
+        }
+        #expCounter {
+            font-size: 16px;
+            margin: 10px;
+            color: #007bff;
+        }
+        .progress-bar-container {
+            width: 200px;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+            margin: 10px auto;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            transition: width 0.5s ease-in-out;
+        }
+        @media (max-width: 600px) {
+            input, button, select {
+                padding: 15px;
+                font-size: 18px;
+                width: 80%;
+                margin: 5px auto;
+                display: block;
+            }
+            .container {
+                padding: 15px;
+            }
+            #task {
+                font-size: 20px;
+            }
+            #tour {
+                width: 90%;
+                left: 5%;
+                top: 10px;
+            }
+            .progress-bar-container {
+                width: 80%;
+            }
+        }
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1e1e1e, #2c3e50);
+                color: #fff;
+            }
+            .container, #tour {
+                background-color: #2d2d2d;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            }
+            input, select, button {
+                background-color: #444;
+                color: #fff;
+                border-color: #666;
+            }
+            #stats, #errorLog, #recommendations, #achievements, #progressChartContainer, #moduleStats {
+                border-color: #666;
+                background: #3a3a3a;
+            }
+            #resetProgress {
+                background: linear-gradient(135deg, #ff6666, #cc3333);
+            }
+            #exportStats {
+                background: linear-gradient(135deg, #66cc66, #33aa33);
+            }
+            #voiceInput {
+                background: linear-gradient(135deg, #6666ff, #3333cc);
+            }
+            #practiceErrors {
+                background: linear-gradient(135deg, #ff9900, #cc7700);
+            }
+            #expCounter {
+                color: #66ccff;
+            }
+            .progress-bar-container {
+                background-color: #555;
+            }
+            .progress-bar {
+                background: linear-gradient(135deg, #66ccff, #3399cc);
+            }
+            h1 {
+                color: #fff;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .correct-answer, .wrong-answer, .achievement {
+                animation: none;
+            }
+            button:active {
+                transform: none;
+            }
+            .progress-bar {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 data-i18n="title">Умный тренажёр арифметики</h1>
+        <div>
+            <label for="language" data-i18n="language">Язык:</label>
+            <select id="language" onchange="setLanguage(this.value)">
+                <option value="ru">Русский</option>
+                <option value="en">English</option>
+            </select>
+            <label for="module" data-i18n="module">Модуль:</label>
+            <select id="module">
+                <option value="multiplication" data-i18n="multiplication">Таблица умножения</option>
+                <option value="addition" data-i18n="addition">Сложение трёхзначных</option>
+                <option value="subtraction" data-i18n="subtraction">Вычитание трёхзначных</option>
+                <option value="division" data-i18n="division">Деление</option>
+                <option value="combined" data-i18n="combined">Смешанные операции</option>
+                <option value="percentages" data-i18n="percentages">Проценты</option>
+            </select>
+        </div>
+        <div id="task" data-i18n-placeholder="taskPlaceholder">Нажмите "Начать", чтобы получить задачу</div>
+        <input type="number" id="answer" placeholder="Ваш ответ" onkeydown="if(event.key === 'Enter') checkAnswer()">
+        <button onclick="checkAnswer()" data-i18n="check">Проверить</button>
+        <button onclick="generateTask()" data-i18n="start">Начать</button>
+        <button id="voiceInput" onclick="startVoiceInput()">🎤</button>
+        <div id="result"></div>
+        <div id="motivation"></div>
+        <div id="expCounter">Опыт: 0 | Уровень: 1</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="expProgress"></div>
+        </div>
+        <div>
+            <label for="volumeControl" data-i18n="volume">Громкость звука:</label>
+            <input type="range" id="volumeControl" min="0" max="100" value="50" onchange="adjustVolume()">
+        </div>
+        <div id="stats">
+            <h3 data-i18n="stats">Статистика</h3>
+            <p data-i18n="currentLevel">Текущий уровень сложности: <span id="currentLevel">1</span></p>
+            <p data-i18n="avgTime">Среднее время ответа: <span id="avgTime">0</span> сек</p>
+            <p data-i18n="bestTime">Лучшее время: <span id="bestTime">0</span> сек</p>
+            <p data-i18n="correctCount">Количество правильных ответов: <span id="correctCount">0</span></p>
+            <p data-i18n="errorCount">Количество ошибок: <span id="errorCount">0</span></p>
+        </div>
+        <div id="moduleStats">
+            <h3 data-i18n="moduleStats">Статистика по модулям</h3>
+            <div id="moduleStatsContent"></div>
+        </div>
+        <div id="achievements">
+            <h3 data-i18n="achievements">Достижения</h3>
+            <ul id="achievementList"></ul>
+        </div>
+        <div id="errorLog">
+            <h3 data-i18n="errorLog">Журнал ошибок</h3>
+            <ul id="errorList"></ul>
+        </div>
+        <div id="recommendations">
+            <h3 data-i18n="recommendations">Рекомендации</h3>
+            <p id="recText" data-i18n="recText">Решайте задачи, чтобы получить рекомендации.</p>
+        </div>
+        <div id="progressChartContainer">
+            <h3 data-i18n="progress">Прогресс</h3>
+            <canvas id="progressChart"></canvas>
+        </div>
+        <button id="resetProgress" onclick="resetProgress()" data-i18n="resetProgress">Сбросить прогресс</button>
+        <button id="exportStats" onclick="exportStats()" data-i18n="exportStats">Экспорт статистики</button>
+        <button id="practiceErrors" onclick="practiceErrors()" data-i18n="practiceErrors">Повторить ошибки</button>
+    </div>
+    <div id="tour" style="display: none;">
+        <p data-i18n="tour">Добро пожаловать! Выберите модуль, введите ответ и нажмите Enter или "Проверить". Ошибки помогут улучшить навыки!</p>
+        <button onclick="closeTour()" data-i18n="tourClose">Понятно</button>
+    </div>
+    <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+            return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+                try {
+                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    var filteredData = jsonData.filter(row => row.some(filledCell));
+                    var headerRowIndex = filteredData.findIndex((row, index) =>
+                        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                    );
+                    if (headerRowIndex === -1 || headerRowIndex > 25) {
+                        headerRowIndex = 0;
+                    }
+                    var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                    return csv;
+                } catch (e) {
+                    console.error(e);
+                    return "";
+                }
+            }
+            return gk_fileData[filename] || "";
+        }
+    </script>
+    <script>
+        const TEXTS = {
+            ru: {
+                title: 'Умный тренажёр арифметики',
+                language: 'Язык:',
+                module: 'Модуль:',
+                multiplication: 'Таблица умножения',
+                addition: 'Сложение трёхзначных',
+                subtraction: 'Вычитание трёхзначных',
+                division: 'Деление',
+                combined: 'Смешанные операции',
+                percentages: 'Проценты',
+                taskPlaceholder: 'Нажмите "Начать", чтобы получить задачу',
+                check: 'Проверить',
+                start: 'Начать',
+                stats: 'Статистика',
+                moduleStats: 'Статистика по модулям',
+                currentLevel: 'Текущий уровень сложности:',
+                avgTime: 'Среднее время ответа:',
+                bestTime: 'Лучшее время:',
+                correctCount: 'Количество правильных ответов:',
+                errorCount: 'Количество ошибок:',
+                achievements: 'Достижения',
+                errorLog: 'Журнал ошибок',
+                recommendations: 'Рекомендации',
+                recText: 'Решайте задачи, чтобы получить рекомендации.',
+                progress: 'Прогресс',
+                resetProgress: 'Сбросить прогресс',
+                exportStats: 'Экспорт статистики',
+                practiceErrors: 'Повторить ошибки',
+                volume: 'Громкость звука:',
+                tour: 'Добро пожаловать! Выберите модуль, введите ответ и нажмите Enter или "Проверить". Ошибки помогут улучшить навыки!',
+                tourClose: 'Понятно',
+                inputError: 'Пожалуйста, введите число!',
+                rangeError: 'Число должно быть от 0 до 9999!',
+                correct: 'Правильно! Время: {time} сек',
+                wrong: 'Неправильно! Правильный ответ: {answer}',
+                voiceError: 'Голосовой ввод не поддерживается в вашем браузере',
+                weakTask: 'Вы ошибаетесь в примерах',
+                errors: 'ошибок',
+                practice: 'Потренируйте эту комбинацию.',
+                tooManyErrors: 'Слишком много ошибок. Попробуйте замедлиться и сосредоточиться на точности.',
+                slowResponse: 'Ваше время ответа',
+                aboveGoal: 'выше цели',
+                seconds: 'сек',
+                practiceModule: 'Повторяйте',
+                multiplicationTable: 'таблицу умножения',
+                divisionTable: 'таблицу деления',
+                combinedOperations: 'смешанные операции',
+                percentagesTable: 'проценты',
+                arithmetic: 'арифметику',
+                forSpeed: 'для скорости.',
+                greatJob: 'Отличная работа! Продолжайте, чтобы закрепить навыки.',
+                memoryTip: 'Для улучшения памяти попробуйте визуализировать таблицу умножения или использовать мнемонические правила.',
+                exp: 'Опыт',
+                level: 'Уровень',
+                correctAnswer: 'Правильно',
+                time: 'Время',
+                resetConfirm: 'Вы уверены, что хотите сбросить весь прогресс?',
+                achievementEarned: 'Достижение получено',
+                motivationMessages: [
+                    'Не сдавайтесь! Каждая ошибка — это шаг к успеху.',
+                    'Вы делаете прогресс! Попробуйте ещё раз.',
+                    'Ошибки помогают учиться. Продолжайте пытаться!',
+                    'Вы почти у цели! Сосредоточьтесь и попробуйте снова.'
+                ],
+                moduleStatsCorrect: 'Правильных',
+                moduleStatsErrors: 'Ошибок',
+                moduleStatsErrorRate: 'Процент ошибок',
+                moduleStatsAvgTime: 'Среднее время'
+            },
+            en: {
+                title: 'Smart Arithmetic Trainer',
+                language: 'Language:',
+                module: 'Module:',
+                multiplication: 'Multiplication Table',
+                addition: 'Three-Digit Addition',
+                subtraction: 'Three-Digit Subtraction',
+                division: 'Division',
+                combined: 'Combined Operations',
+                percentages: 'Percentages',
+                taskPlaceholder: 'Click "Start" to get a task',
+                check: 'Check',
+                start: 'Start',
+                stats: 'Statistics',
+                moduleStats: 'Module Statistics',
+                currentLevel: 'Current difficulty level:',
+                avgTime: 'Average response time:',
+                bestTime: 'Best time:',
+                correctCount: 'Number of correct answers:',
+                errorCount: 'Number of errors:',
+                achievements: 'Achievements',
+                errorLog: 'Error Log',
+                recommendations: 'Recommendations',
+                recText: 'Solve tasks to get recommendations.',
+                progress: 'Progress',
+                resetProgress: 'Reset Progress',
+                exportStats: 'Export Statistics',
+                practiceErrors: 'Practice Errors',
+                volume: 'Sound Volume:',
+                tour: 'Welcome! Choose a module, enter your answer, and press Enter or "Check". Mistakes help you improve!',
+                tourClose: 'Got it',
+                inputError: 'Please enter a number!',
+                rangeError: 'Number must be between 0 and 9999!',
+                correct: 'Correct! Time: {time} sec',
+                wrong: 'Wrong! Correct answer: {answer}',
+                voiceError: 'Voice input is not supported in your browser',
+                weakTask: 'You make mistakes in tasks',
+                errors: 'errors',
+                practice: 'Practice this combination.',
+                tooManyErrors: 'Too many errors. Try slowing down and focusing on accuracy.',
+                slowResponse: 'Your response time',
+                aboveGoal: 'is above the goal',
+                seconds: 'sec',
+                practiceModule: 'Practice',
+                multiplicationTable: 'the multiplication table',
+                divisionTable: 'the division table',
+                combinedOperations: 'combined operations',
+                percentagesTable: 'percentages',
+                arithmetic: 'arithmetic',
+                forSpeed: 'for speed.',
+                greatJob: 'Great job! Keep going to reinforce your skills.',
+                memoryTip: 'To improve memory, try visualizing the multiplication table or using mnemonic rules.',
+                exp: 'EXP',
+                level: 'Level',
+                correctAnswer: 'Correct',
+                time: 'Time',
+                resetConfirm: 'Are you sure you want to reset all progress?',
+                achievementEarned: 'Achievement Earned',
+                motivationMessages: [
+                    'Don’t give up! Every mistake is a step toward success.',
+                    'You’re making progress! Try again.',
+                    'Mistakes help you learn. Keep trying!',
+                    'You’re almost there! Focus and try again.'
+                ],
+                moduleStatsCorrect: 'Correct',
+                moduleStatsErrors: 'Errors',
+                moduleStatsErrorRate: 'Error Rate',
+                moduleStatsAvgTime: 'Average Time'
+            }
+        };
+
+        let currentLang = localStorage.getItem('mathTrainerLang') || 'ru';
+        let currentTask = { a: 0, b: 0, c: 0, correctAnswer: 0, module: '' };
+        let errorLog = JSON.parse(localStorage.getItem('mathTrainerErrorLog')) || [];
+        let responseTimes = JSON.parse(localStorage.getItem('mathTrainerResponseTimes')) || [];
+        let correctCount = parseInt(localStorage.getItem('mathTrainerCorrectCount')) || 0;
+        let errorCount = parseInt(localStorage.getItem('mathTrainerErrorCount')) || 0;
+        let exp = parseInt(localStorage.getItem('mathTrainerEXP')) || 0;
+        let playerLevel = Math.floor(exp / 100) + 1;
+        let startTime;
+        let currentLevel = parseInt(localStorage.getItem('mathTrainerCurrentLevel')) || 1;
+        let achievements = JSON.parse(localStorage.getItem('mathTrainerAchievements')) || [];
+        let taskHistory = JSON.parse(localStorage.getItem('mathTrainerTaskHistory')) || {};
+        let lastMotivationTime = 0;
+        let saveTimeout;
+        let progressChart;
+        let deferredPrompt;
+
+        const correctSound = new Audio('https://www.soundjay.com/buttons/button-3.mp3');
+        const wrongSound = new Audio('https://www.soundjay.com/buttons/button-2.mp3');
+
+        // Установка начальной громкости
+        correctSound.volume = 0.5;
+        wrongSound.volume = 0.5;
+
+        const levelSettings = {
+            multiplication: [
+                { maxNum: 5, timeGoal: 5 },
+                { maxNum: 8, timeGoal: 4 },
+                { maxNum: 10, timeGoal: 3 },
+                { maxNum: 12, timeGoal: 2.5 },
+                { maxNum: 15, timeGoal: 2 }
+            ],
+            addition: [
+                { minNum: 100, maxNum: 200, timeGoal: 10 },
+                { minNum: 100, maxNum: 300, timeGoal: 8 },
+                { minNum: 100, maxNum: 500, timeGoal: 6 },
+                { minNum: 100, maxNum: 800, timeGoal: 5 },
+                { minNum: 100, maxNum: 999, timeGoal: 4 }
+            ],
+            subtraction: [
+                { minNum: 100, maxNum: 200, timeGoal: 10 },
+                { minNum: 100, maxNum: 300, timeGoal: 8 },
+                { minNum: 100, maxNum: 500, timeGoal: 6 },
+                { minNum: 100, maxNum: 800, timeGoal: 5 },
+                { minNum: 100, maxNum: 999, timeGoal: 4 }
+            ],
+            division: [
+                { maxNum: 5, timeGoal: 5 },
+                { maxNum: 8, timeGoal: 4 },
+                { maxNum: 10, timeGoal: 3 },
+                { maxNum: 12, timeGoal: 2.5 },
+                { maxNum: 15, timeGoal: 2 }
+            ],
+            combined: [
+                { maxNum: 5, timeGoal: 8 },
+                { maxNum: 8, timeGoal: 7 },
+                { maxNum: 10, timeGoal: 6 },
+                { maxNum: 12, timeGoal: 5 },
+                { maxNum: 15, timeGoal: 4 }
+            ],
+            percentages: [
+                { maxPercent: 50, timeGoal: 15 },
+                { maxPercent: 100, timeGoal: 12 },
+                { maxPercent: 100, timeGoal: 10 },
+                { maxPercent: 100, timeGoal: 8 },
+                { maxPercent: 100, timeGoal: 6 }
+            ]
+        };
+
+        const achievementGoals = {
+            global: [
+                { id: 'first10', name: { ru: 'Новичок', en: 'Beginner' }, condition: () => correctCount >= 10, reward: { ru: 'Решено 10 задач!', en: 'Solved 10 tasks!' } },
+                { id: 'fast5', name: { ru: 'Скоростной', en: 'Speedy' }, condition: () => responseTimes.some(t => t < 3), reward: { ru: 'Ответ быстрее 3 секунд!', en: 'Answer faster than 3 seconds!' } },
+                { id: 'level3', name: { ru: 'Мастер', en: 'Master' }, condition: () => currentLevel >= 3, reward: { ru: 'Достигнут 3-й уровень сложности!', en: 'Reached 3rd difficulty level!' } },
+                { id: 'noErrors', name: { ru: 'Безупречный', en: 'Flawless' }, condition: () => correctCount >= 20 && errorCount === 0, reward: { ru: '20 правильных ответов без ошибок!', en: '20 correct answers without errors!' } },
+                { id: 'hundred', name: { ru: 'Чемпион', en: 'Champion' }, condition: () => correctCount >= 100, reward: { ru: 'Решено 100 задач!', en: 'Solved 100 tasks!' } }
+            ],
+            multiplication: [
+                { id: 'mult10', name: { ru: 'Умножайка', en: 'Multiplier' }, condition: () => (taskHistory['multiplication']?.correct || 0) >= 10, reward: { ru: '10 правильных умножений!', en: '10 correct multiplications!' } },
+                { id: 'mult100', name: { ru: 'Мастер умножения', en: 'Multiplication Master' }, condition: () => (taskHistory['multiplication']?.correct || 0) >= 100, reward: { ru: '100 правильных умножений!', en: '100 correct multiplications!' } }
+            ],
+            addition: [
+                { id: 'add10', name: { ru: 'Сумматор', en: 'Adder' }, condition: () => (taskHistory['addition']?.correct || 0) >= 10, reward: { ru: '10 правильных сложений!', en: '10 correct additions!' } }
+            ],
+            subtraction: [
+                { id: 'sub10', name: { ru: 'Вычитатель', en: 'Subtractor' }, condition: () => (taskHistory['subtraction']?.correct || 0) >= 10, reward: { ru: '10 правильных вычитаний!', en: '10 correct subtractions!' } }
+            ],
+            division: [
+                { id: 'div10', name: { ru: 'Делитель', en: 'Divider' }, condition: () => (taskHistory['division']?.correct || 0) >= 10, reward: { ru: '10 правильных делений!', en: '10 correct divisions!' } }
+            ],
+            combined: [
+                { id: 'comb10', name: { ru: 'Комбинатор', en: 'Combiner' }, condition: () => (taskHistory['combined']?.correct || 0) >= 10, reward: { ru: '10 правильных смешанных операций!', en: '10 correct combined operations!' } }
+            ],
+            percentages: [
+                { id: 'perc10', name: { ru: 'Процентщик', en: 'Percent Master' }, condition: () => (taskHistory['percentages']?.correct || 0) >= 10, reward: { ru: '10 правильных задач на проценты!', en: '10 correct percentage tasks!' } }
+            ]
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('mathTrainerLang', lang);
+            document.querySelectorAll('[data-i18n]').forEach(elem => {
+                const key = elem.getAttribute('data-i18n');
+                if (key === 'taskPlaceholder') {
+                    if (elem.textContent.includes('=')) return;
+                    elem.textContent = TEXTS[lang][key];
+                } else {
+                    const originalHTML = elem.innerHTML;
+                    const text = originalHTML.replace(/<[^>]+>/g, '');
+                    if (TEXTS[lang][key]?.includes('{')) {
+                        elem.innerHTML = originalHTML;
+                    } else {
+                        elem.innerHTML = originalHTML.replace(text, TEXTS[lang][key]);
+                    }
+                }
+            });
+            document.getElementById('task').textContent = document.getElementById('task').textContent.includes('=') ? document.getElementById('task').textContent : TEXTS[lang].taskPlaceholder;
+            updateRecommendations();
+            updateModuleStats();
+            updateProgressChart();
+        }
+
+        function saveProgress() {
+            localStorage.setItem('mathTrainerErrorLog', JSON.stringify(errorLog.slice(-50)));
+            localStorage.setItem('mathTrainerResponseTimes', JSON.stringify(responseTimes.slice(-100)));
+            localStorage.setItem('mathTrainerCorrectCount', correctCount);
+            localStorage.setItem('mathTrainerErrorCount', errorCount);
+            localStorage.setItem('mathTrainerEXP', exp);
+            localStorage.setItem('mathTrainerCurrentLevel', currentLevel);
+            localStorage.setItem('mathTrainerAchievements', JSON.stringify(achievements));
+            localStorage.setItem('mathTrainerTaskHistory', JSON.stringify(taskHistory));
+        }
+
+        function debouncedSaveProgress() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(saveProgress, 2000);
+        }
+
+        function resetProgress() {
+            if (confirm(TEXTS[currentLang].resetConfirm || 'Вы уверены, что хотите сбросить весь прогресс?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        function exportStats() {
+            const data = {
+                correctCount,
+                errorCount,
+                exp,
+                playerLevel,
+                currentLevel,
+                achievements,
+                taskHistory
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'math_trainer_stats.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function showTour() {
+            if (!localStorage.getItem('mathTrainerTourShown')) {
+                document.getElementById('tour').style.display = 'block';
+                localStorage.setItem('mathTrainerTourShown', 'true');
+            }
+        }
+
+        function closeTour() {
+            document.getElementById('tour').style.display = 'none';
+        }
+
+        function startVoiceInput() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                recognition.lang = currentLang === 'ru' ? 'ru-RU' : 'en-US';
+                recognition.onresult = (e) => {
+                    const spokenText = e.results[0][0].transcript;
+                    document.getElementById('answer').value = parseInt(spokenText) || '';
+                    checkAnswer();
+                };
+                recognition.onerror = () => {
+                    document.getElementById('result').textContent = TEXTS[currentLang].voiceError;
+                    document.getElementById('result').style.color = 'red';
+                    document.getElementById('result').classList.add('wrong-answer');
+                    setTimeout(() => document.getElementById('result').classList.remove('wrong-answer'), 500);
+                };
+                recognition.start();
+            } else {
+                document.getElementById('result').textContent = TEXTS[currentLang].voiceError;
+                document.getElementById('result').style.color = 'red';
+                document.getElementById('result').classList.add('wrong-answer');
+                setTimeout(() => document.getElementById('result').classList.remove('wrong-answer'), 500);
+            }
+        }
+
+        function adjustVolume() {
+            const volume = document.getElementById('volumeControl').value / 100;
+            correctSound.volume = volume;
+            wrongSound.volume = volume;
+        }
+
+        function addEXP(points) {
+            exp += points;
+            playerLevel = Math.floor(exp / 100) + 1;
+            const progress = (exp % 100) / 100 * 100;
+            document.getElementById('expProgress').style.width = `${progress}%`;
+            localStorage.setItem('mathTrainerEXP', exp);
+            document.getElementById('expCounter').textContent = `${TEXTS[currentLang].exp || 'Опыт'}: ${exp} | ${TEXTS[currentLang].level || 'Уровень'}: ${playerLevel}`;
+        }
+
+        function loadChartLibrary(callback) {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+            script.onload = callback;
+            document.head.appendChild(script);
+        }
+
+        function updateProgressChart() {
+            if (typeof Chart === 'undefined') {
+                loadChartLibrary(() => updateProgressChart());
+                return;
+            }
+            const moduleStats = taskHistory[currentTask.module] || { responseTimes: [] };
+            const labels = moduleStats.responseTimes.map((_, i) => i + 1);
+            const data = moduleStats.responseTimes;
+
+            if (progressChart) progressChart.destroy();
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            progressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels.slice(-20),
+                    datasets: [{
+                        label: TEXTS[currentLang].responseTime || 'Время ответа (сек)',
+                        data: data.slice(-20),
+                        borderColor: '#007bff',
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        function updateModuleStats() {
+            const statsDiv = document.getElementById('moduleStatsContent');
+            let html = '';
+            const modules = ['multiplication', 'addition', 'subtraction', 'division', 'combined', 'percentages'];
+            modules.forEach(module => {
+                const stats = taskHistory[module] || { correct: 0, errors: 0, responseTimes: [] };
+                const errorRate = stats.correct + stats.errors > 0 ? ((stats.errors / (stats.correct + stats.errors)) * 100).toFixed(1) : 0;
+                const avgTime = stats.responseTimes.length > 0 ? (stats.responseTimes.reduce((a, b) => a + b, 0) / stats.responseTimes.length).toFixed(2) : 0;
+                html += `<p><strong>${TEXTS[currentLang][module] || module}:</strong> ${TEXTS[currentLang].moduleStatsCorrect} ${stats.correct}, ${TEXTS[currentLang].moduleStatsErrors} ${stats.errors}, ${TEXTS[currentLang].moduleStatsErrorRate} ${errorRate}%, ${TEXTS[currentLang].moduleStatsAvgTime} ${avgTime} ${TEXTS[currentLang].seconds}</p>`;
+            });
+            statsDiv.innerHTML = html;
+        }
+
+        function showAchievementNotification(achievement) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(`${TEXTS[currentLang].achievementEarned || 'Достижение получено'}: ${achievement.name[currentLang]}`, {
+                    body: achievement.reward[currentLang],
+                    icon: '/icon-192x192.png'
+                });
+            } else if ('Notification' in window && Notification.permission !== 'denied') {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        new Notification(`${TEXTS[currentLang].achievementEarned || 'Достижение получено'}: ${achievement.name[currentLang]}`, {
+                            body: achievement.reward[currentLang]
+                        });
+                    }
+                });
+            }
+        }
+
+        function getWeakTasks() {
+            return Object.entries(taskHistory)
+                .filter(([key, stats]) => {
+                    return key.includes('×') && stats.errors > stats.correct && !key.match(/^(multiplication|addition|subtraction|division|combined|percentages)$/);
+                })
+                .map(([task, stats]) => ({ task, errorRate: stats.errors / (stats.correct + stats.errors || 1) }))
+                .sort((a, b) => b.errorRate - a.errorRate)
+                .map(item => item.task);
+        }
+
+        function generateTask() {
+            const module = document.getElementById('module').value;
+            const levelConfig = levelSettings[module][currentLevel - 1];
+            let a, b, c, taskText, correctAnswer;
+
+            if (module === 'multiplication') {
+                const weakTasks = getWeakTasks();
+                if (weakTasks.length > 0 && Math.random() < 0.4) {
+                    const weakTask = weakTasks[Math.floor(Math.random() * weakTasks.length)];
+                    const numbers = weakTask.split('×').map(Number);
+                    a = numbers[0];
+                    b = numbers[1];
+                    if (isNaN(a) || isNaN(b)) {
+                        console.warn(`Некорректная weakTask: ${weakTask}, генерируем новую задачу`);
+                        a = Math.floor(Math.random() * levelConfig.maxNum) + 1;
+                        b = Math.floor(Math.random() * levelConfig.maxNum) + 1;
+                    }
+                } else {
+                    a = Math.floor(Math.random() * levelConfig.maxNum) + 1;
+                    b = Math.floor(Math.random() * levelConfig.maxNum) + 1;
+                }
+                taskText = `${a} × ${b} = ?`;
+                correctAnswer = a * b;
+            } else if (module === 'division') {
+                b = Math.floor(Math.random() * levelConfig.maxNum) + 1;
+                a = b * (Math.floor(Math.random() * levelConfig.maxNum) + 1);
+                taskText = `${a} ÷ ${b} = ?`;
+                correctAnswer = a / b;
+            } else if (module === 'combined') {
+                a = Math.floor(Math.random() * levelConfig.maxNum) + 1;
+                b = Math.floor(Math.random() * levelConfig.maxNum) + 1;
+                c = Math.floor(Math.random() * levelConfig.maxNum) + 1;
+                taskText = `(${a} + ${b}) × ${c} = ?`;
+                correctAnswer = (a + b) * c;
+            } else if (module === 'percentages') {
+                a = Math.floor(Math.random() * 100) + 50;
+                b = Math.floor(Math.random() * levelConfig.maxPercent) + 1;
+                taskText = `${b}% от ${a} = ?`;
+                correctAnswer = Math.round(a * b / 100);
+            } else {
+                a = Math.floor(Math.random() * (levelConfig.maxNum - levelConfig.minNum + 1)) + levelConfig.minNum;
+                b = Math.floor(Math.random() * (levelConfig.maxNum - levelConfig.minNum + 1)) + levelConfig.minNum;
+                if (module === 'subtraction' && a < b) [a, b] = [b, a];
+                taskText = module === 'addition' ? `${a} + ${b} = ?` : `${a} - ${b} = ?`;
+                correctAnswer = module === 'addition' ? a + b : a - b;
+            }
+
+            currentTask = { a, b, c, correctAnswer, module };
+            document.getElementById('task').textContent = taskText;
+            document.getElementById('answer').value = '';
+            document.getElementById('result').textContent = '';
+            startTime = performance.now();
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById('answer').value);
+            const resultDiv = document.getElementById('result');
+            const responseTime = (performance.now() - startTime) / 1000;
+
+            if (isNaN(userAnswer)) {
+                resultDiv.textContent = TEXTS[currentLang].inputError;
+                resultDiv.style.color = 'red';
+                resultDiv.classList.add('wrong-answer');
+                setTimeout(() => resultDiv.classList.remove('wrong-answer'), 500);
+                try {
+                    wrongSound.play().catch(e => console.error('Audio error:', e));
+                } catch (e) {
+                    console.error('Audio playback failed:', e);
+                }
+                return;
+            }
+            if (userAnswer < 0 || userAnswer > 9999) {
+                resultDiv.textContent = TEXTS[currentLang].rangeError;
+                resultDiv.style.color = 'red';
+                resultDiv.classList.add('wrong-answer');
+                setTimeout(() => resultDiv.classList.remove('wrong-answer'), 500);
+                try {
+                    wrongSound.play().catch(e => console.error('Audio error:', e));
+                } catch (e) {
+                    console.error('Audio playback failed:', e);
+                }
+                return;
+            }
+
+            const taskKey = currentTask.module === 'multiplication' ? `${currentTask.a}×${currentTask.b}` :
+                           currentTask.module === 'division' ? `${currentTask.a}÷${currentTask.b}` :
+                           currentTask.module === 'combined' ? `(${currentTask.a}+${currentTask.b})×${currentTask.c}` :
+                           currentTask.module === 'percentages' ? `${currentTask.b}%${currentTask.a}` :
+                           `${currentTask.a}${currentTask.module === 'addition' ? '+' : '-'}${currentTask.b}`;
+            if (userAnswer === currentTask.correctAnswer) {
+                resultDiv.textContent = TEXTS[currentLang].correct.replace('{time}', responseTime.toFixed(2));
+                resultDiv.style.color = 'green';
+                resultDiv.classList.add('correct-answer');
+                setTimeout(() => resultDiv.classList.remove('correct-answer'), 500);
+                try {
+                    correctSound.play().catch(e => console.error('Audio error:', e));
+                } catch (e) {
+                    console.error('Audio playback failed:', e);
+                }
+                responseTimes.push(responseTime);
+                correctCount++;
+                addEXP(10);
+                taskHistory[currentTask.module] = taskHistory[currentTask.module] || { correct: 0, errors: 0, responseTimes: [] };
+                taskHistory[currentTask.module].correct++;
+                taskHistory[currentTask.module].responseTimes.push(responseTime);
+                updateTaskHistory(taskKey, true);
+            } else {
+                resultDiv.textContent = TEXTS[currentLang].wrong.replace('{answer}', currentTask.correctAnswer);
+                resultDiv.style.color = 'red';
+                resultDiv.classList.add('wrong-answer');
+                setTimeout(() => resultDiv.classList.remove('wrong-answer'), 500);
+                try {
+                    wrongSound.play().catch(e => console.error('Audio error:', e));
+                } catch (e) {
+                    console.error('Audio playback failed:', e);
+                }
+                logError(taskKey, userAnswer, responseTime);
+                errorCount++;
+                taskHistory[currentTask.module] = taskHistory[currentTask.module] || { correct: 0, errors: 0, responseTimes: [] };
+                taskHistory[currentTask.module].errors++;
+                taskHistory[currentTask.module].responseTimes.push(responseTime);
+                updateTaskHistory(taskKey, false);
+                showMotivation();
+            }
+
+            updateStats();
+            updateModuleStats();
+            updateAchievements();
+            adjustLevel();
+            updateRecommendations();
+            updateProgressChart();
+            debouncedSaveProgress();
+            generateTask();
+        }
+
+        function updateTaskHistory(taskKey, isCorrect) {
+            if (Object.keys(taskHistory).length > 100 && !taskKey.match(/^(multiplication|addition|subtraction|division|combined|percentages)$/)) {
+                const oldestKey = Object.keys(taskHistory).find(key => !key.match(/^(multiplication|addition|subtraction|division|combined|percentages)$/));
+                delete taskHistory[oldestKey];
+            }
+            taskHistory[taskKey] = taskHistory[taskKey] || { correct: 0, errors: 0 };
+            if (isCorrect) {
+                taskHistory[taskKey].correct++;
+            } else {
+                taskHistory[taskKey].errors++;
+            }
+            if (taskKey.includes('×') && taskKey.split('×').length !== 2) {
+                console.warn(`Некорректный формат taskKey: ${taskKey}`);
+            }
+        }
+
+        function logError(taskKey, userAnswer, responseTime) {
+            if (errorLog.length >= 50) errorLog.shift();
+            const taskText = document.getElementById('task').textContent.replace(' = ?', '');
+            const errorEntry = {
+                task: taskText,
+                userAnswer,
+                correctAnswer: currentTask.correctAnswer,
+                responseTime,
+                timestamp: new Date().toISOString()
+            };
+            errorLog.push(errorEntry);
+
+            const errorList = document.getElementById('errorList');
+            const li = document.createElement('li');
+            li.textContent = `${taskText} = ${userAnswer} (${TEXTS[currentLang].correctAnswer || 'Правильно'}: ${currentTask.correctAnswer}, ${TEXTS[currentLang].time || 'Время'}: ${responseTime.toFixed(2)} ${TEXTS[currentLang].seconds || 'сек'})`;
+            errorList.appendChild(li);
+        }
+
+        function updateStats() {
+            const avgTime = responseTimes.length > 0 ? (responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length).toFixed(2) : 0;
+            const bestTime = responseTimes.length > 0 ? Math.min(...responseTimes).toFixed(2) : 0;
+
+            document.getElementById('currentLevel').textContent = currentLevel;
+            document.getElementById('avgTime').textContent = avgTime;
+            document.getElementById('bestTime').textContent = bestTime;
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('errorCount').textContent = errorCount;
+            document.getElementById('expCounter').textContent = `${TEXTS[currentLang].exp || 'Опыт'}: ${exp} | ${TEXTS[currentLang].level || 'Уровень'}: ${playerLevel}`;
+        }
+
+        function adjustLevel() {
+            const levelConfig = levelSettings[currentTask.module][currentLevel - 1];
+            const moduleStats = taskHistory[currentTask.module] || { responseTimes: [] };
+            const avgTime = moduleStats.responseTimes.length > 0 ? moduleStats.responseTimes.reduce((a, b) => a + b, 0) / moduleStats.responseTimes.length : 0;
+            const accuracy = correctCount / (correctCount + errorCount) || 0;
+
+            if (moduleStats.responseTimes.length >= 10 && accuracy > 0.9 && avgTime < levelConfig.timeGoal && currentLevel < 5) {
+                currentLevel++;
+            } else if (moduleStats.responseTimes.length >= 10 && (accuracy < 0.6 || avgTime > levelConfig.timeGoal * 1.5) && currentLevel > 1) {
+                currentLevel--;
+            }
+        }
+
+        function updateRecommendations() {
+            const recText = document.getElementById('recText');
+            const moduleStats = taskHistory[currentTask.module] || { responseTimes: [], correct: 0, errors: 0 };
+            const avgTime = moduleStats.responseTimes.length > 0 ? (moduleStats.responseTimes.reduce((a, b) => a + b, 0) / moduleStats.responseTimes.length).toFixed(2) : 0;
+            const levelConfig = levelSettings[currentTask.module][currentLevel - 1];
+            let recommendations = [];
+
+            const weakTasks = getWeakTasks();
+            if (weakTasks.length > 0) {
+                const weakestTask = weakTasks[0];
+                const stats = taskHistory[weakestTask];
+                const errorRate = ((stats.errors / (stats.correct + stats.errors)) * 100).toFixed(1);
+                recommendations.push(`${TEXTS[currentLang].weakTask || 'Вы ошибаетесь в примерах'}: ${weakestTask} (${errorRate}% ${TEXTS[currentLang].errors || 'ошибок'}). ${TEXTS[currentLang].practice || 'Потренируйте эту комбинацию.'}`);
+            }
+
+            const accuracy = moduleStats.correct / (moduleStats.correct + moduleStats.errors) || 0;
+            if (accuracy < 0.7) {
+                recommendations.push(TEXTS[currentLang].tooManyErrors || 'Слишком много ошибок. Попробуйте замедлиться и сосредоточиться на точности.');
+            } else if (avgTime > levelConfig.timeGoal) {
+                recommendations.push(`${TEXTS[currentLang].slowResponse || 'Ваше время ответа'} (${avgTime} ${TEXTS[currentLang].seconds || 'сек'}) ${TEXTS[currentLang].aboveGoal || 'выше цели'} (${levelConfig.timeGoal} ${TEXTS[currentLang].seconds || 'сек'}). ${TEXTS[currentLang].practiceModule || 'Повторяйте'} ${currentTask.module === 'multiplication' ? TEXTS[currentLang].multiplicationTable || 'таблицу умножения' : currentTask.module === 'division' ? TEXTS[currentLang].divisionTable || 'таблицу деления' : currentTask.module === 'combined' ? TEXTS[currentLang].combinedOperations || 'смешанные операции' : currentTask.module === 'percentages' ? TEXTS[currentLang].percentagesTable || 'проценты' : TEXTS[currentLang].arithmetic || 'арифметику'} ${TEXTS[currentLang].forSpeed || 'для скорости.'}`);
+            } else {
+                recommendations.push(TEXTS[currentLang].greatJob || 'Отличная работа! Продолжайте, чтобы закрепить навыки.');
+            }
+
+            if (currentTask.module === 'multiplication' && weakTasks.length > 0) {
+                recommendations.push(TEXTS[currentLang].memoryTip || 'Для улучшения памяти попробуйте визуализировать таблицу умножения или использовать мнемонические правила.');
+            }
+
+            recText.innerHTML = recommendations.length > 0 ? recommendations.join('<br>') : TEXTS[currentLang].recText;
+        }
+
+        function updateAchievements() {
+            const achievementList = document.getElementById('achievementList');
+            if (!achievementList) return;
+
+            const checkAchievements = (goals, category) => {
+                goals.forEach(goal => {
+                    if (!achievements.includes(goal.id) && goal.condition()) {
+                        achievements.push(goal.id);
+                        const li = document.createElement('li');
+                        li.textContent = `${goal.name[currentLang]}: ${goal.reward[currentLang]}`;
+                        li.className = 'achievement';
+                        achievementList.appendChild(li);
+                        showAchievementNotification(goal);
+                    }
+                });
+            };
+
+            checkAchievements(achievementGoals.global, 'global');
+            checkAchievements(achievementGoals[currentTask.module], currentTask.module);
+            debouncedSaveProgress();
+        }
+
+        function showMotivation() {
+            const now = performance.now();
+            if (now - lastMotivationTime < 10000) return;
+            lastMotivationTime = now;
+
+            const motivationMessages = TEXTS[currentLang].motivationMessages;
+            const motivationDiv = document.getElementById('motivation');
+            motivationDiv.textContent = motivationMessages[Math.floor(Math.random() * motivationMessages.length)];
+            setTimeout(() => motivationDiv.textContent = '', 5000);
+        }
+
+        function practiceErrors() {
+            const weakTasks = getWeakTasks();
+            if (weakTasks.length === 0) {
+                document.getElementById('result').textContent = currentLang === 'ru' ? 'Нет ошибок для повторения!' : 'No errors to practice!';
+                document.getElementById('result').style.color = 'blue';
+                return;
+            }
+
+            const taskToPractice = weakTasks[0];
+            let a, b, c, taskText, correctAnswer, module;
+
+            if (taskToPractice.includes('×')) {
+                [a, b] = taskToPractice.split('×').map(Number);
+                taskText = `${a} × ${b} = ?`;
+                correctAnswer = a * b;
+                module = 'multiplication';
+            } else if (taskToPractice.includes('÷')) {
+                [a, b] = taskToPractice.split('÷').map(Number);
+                taskText = `${a} ÷ ${b} = ?`;
+                correctAnswer = a / b;
+                module = 'division';
+            } else if (taskToPractice.includes('%')) {
+                [b, a] = taskToPractice.split('%').map(Number);
+                taskText = `${b}% от ${a} = ?`;
+                correctAnswer = Math.round(a * b / 100);
+                module = 'percentages';
+            } else if (taskToPractice.includes('+') || taskToPractice.includes('-')) {
+                const operator = taskToPractice.includes('+') ? '+' : '-';
+                [a, b] = taskToPractice.split(operator).map(Number);
+                taskText = operator === '+' ? `${a} + ${b} = ?` : `${a} - ${b} = ?`;
+                correctAnswer = operator === '+' ? a + b : a - b;
+                module = operator === '+' ? 'addition' : 'subtraction';
+            } else {
+                return;
+            }
+
+            currentTask = { a, b, c: 0, correctAnswer, module };
+            document.getElementById('task').textContent = taskText;
+            document.getElementById('answer').value = '';
+            document.getElementById('result').textContent = '';
+            startTime = performance.now();
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(err => console.error('Service Worker registration failed:', err));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                setLanguage(currentLang);
+                showTour();
+                updateProgressChart();
+                updateStats();
+                updateModuleStats();
+                document.getElementById('expProgress').style.width = `${(exp % 100) / 100 * 100}%`;
+                generateTask();
+            } catch (error) {
+                console.error('Ошибка при инициализации приложения:', error);
+            }
+        });
+    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'939055b02f6cbfd3',t:'MTc0NjExMzU3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
