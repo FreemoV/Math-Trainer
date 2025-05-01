@@ -14,7 +14,7 @@
 - Экспорт статистики в JSON.
 
 ## Установка
-1. Перейдите на сайт: [https://ваш-username.github.io/repo-name/](https://ваш-username.github.io/repo-name/).
+1. Перейдите на сайт: [Math-Trainer](https://freemov.github.io/Math-Trainer/).
 2. Добавьте приложение на главный экран вашего устройства для оффлайн-доступа.
 
 ## Для разработчиков
