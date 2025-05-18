@@ -1,0 +1,933 @@
+<html lang="en" class="featurebase-widget featurebase-fullscreen featurebase-right"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydra</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' * data: local:;">
+    <script type="module" crossorigin="" src="./assets/index-D4Crpa0H.js"></script>
+    <link rel="stylesheet" crossorigin="" href="./assets/index-MSECbGem.css">
+  <script id="external-resources" src="https://assets.hydralauncher.gg/bundle.js?t=1747538456155"></script><script src="https://do.featurebase.app/js/sdk.js" id="featurebase-sdk"></script><link href="https://do.featurebase.app/js/sdk.css" rel="stylesheet" type="text/css"><style><br>      .featurebase-widget-iframe {<br>        height: calc(var(--featurebase-widget-height) - 35px) !important;<br>      }<br><br>      .fb-widget-fullscreen-x {<br>        top: calc(16px + 35px) !important;<br>      }<br>    </style><style id="react-tooltip-core-styles" type="text/css">:root{--rt-color-white:#fff;--rt-color-dark:#222;--rt-color-success:#8dc572;--rt-color-error:#be6464;--rt-color-warning:#f0ad4e;--rt-color-info:#337ab7;--rt-opacity:0.9;--rt-transition-show-delay:0.15s;--rt-transition-closing-delay:0.15s}.core-styles-module_tooltip__3vRRp{position:absolute;top:0;left:0;pointer-events:none;opacity:0;will-change:opacity}.core-styles-module_fixed__pcSol{position:fixed}.core-styles-module_arrow__cvMwQ{position:absolute;background:inherit}.core-styles-module_noArrow__xock6{display:none}.core-styles-module_clickable__ZuTTB{pointer-events:auto}.core-styles-module_show__Nt9eE{opacity:var(--rt-opacity);transition:opacity var(--rt-transition-show-delay)ease-out}.core-styles-module_closing__sGnxF{opacity:0;transition:opacity var(--rt-transition-closing-delay)ease-in}</style><style id="react-tooltip-base-styles" type="text/css">
+.styles-module_tooltip__mnnfp{padding:8px 16px;border-radius:3px;font-size:90%;width:max-content}.styles-module_arrow__K0L3T{width:8px;height:8px}[class*='react-tooltip__place-top']>.styles-module_arrow__K0L3T{transform:rotate(45deg)}[class*='react-tooltip__place-right']>.styles-module_arrow__K0L3T{transform:rotate(135deg)}[class*='react-tooltip__place-bottom']>.styles-module_arrow__K0L3T{transform:rotate(225deg)}[class*='react-tooltip__place-left']>.styles-module_arrow__K0L3T{transform:rotate(315deg)}.styles-module_dark__xNqje{background:var(--rt-color-dark);color:var(--rt-color-white)}.styles-module_light__Z6W-X{background-color:var(--rt-color-white);color:var(--rt-color-dark)}.styles-module_success__A2AKt{background-color:var(--rt-color-success);color:var(--rt-color-white)}.styles-module_warning__SCK0X{background-color:var(--rt-color-warning);color:var(--rt-color-white)}.styles-module_error__JvumD{background-color:var(--rt-color-error);color:var(--rt-color-white)}.styles-module_info__BWdHW{background-color:var(--rt-color-info);color:var(--rt-color-white)}</style><style id="custom-css">
+        /* === Подключение шрифтов === */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+/* === CSS Переменные для DMC темы === */
+:root {
+  --dmc-red: #ff0000; /* Основной красный акцент */
+  --dmc-dark-base: rgba(10, 10, 20, 0.9); /* Базовый темный фон */
+  --dmc-dark-medium: rgba(20, 20, 30, 0.9); /* Темный фон для контейнеров */
+  --dmc-dark-semi-transparent: rgba(20, 20, 30, 0.15); /* Полупрозрачный темный */
+  --dmc-dark-more-transparent: rgba(20, 20, 30, 0.10); /* Более прозрачный темный */
+  --dmc-grey-border: rgba(120, 130, 160, 0.18); /* Серый для границ */
+  --dmc-grey-border-semi: rgba(120, 130, 160, 0.12); /* Более прозрачный серый для границ */
+  --dmc-text-light: #e0e0ff; /* Светлый текст */
+  --dmc-text-medium: #c0c0d0; /* Средний текст */
+  --dmc-text-dark: #a0a0b0; /* Темный текст */
+  --dmc-box-shadow: rgba(40, 60, 100, 0.18); /* Тени */
+  --dmc-red-glow-light: rgba(255, 0, 0, 0.3); /* Светлое красное свечение */
+  --dmc-red-glow-medium: rgba(255, 0, 0, 0.5); /* Среднее красное свечение */
+  --dmc-red-glow-strong: rgba(255, 0, 0, 0.8); /* Сильное красное свечение */
+  --dmc-transition-duration: 0.3s; /* Стандартная длительность перехода */
+  --dmc-scrollbar-thumb: rgba(128, 20, 20, 0.6); /* Цвет скроллбара */
+  --dmc-scrollbar-thumb-hover: rgba(180, 30, 30, 0.8); /* Цвет скроллбара при наведении */
+}
+
+/* === Базовые стили body и фон === */
+body {
+  color: var(--dmc-text-light);
+  font-family: 'Poppins', 'Nunito', sans-serif;
+  margin: 0;
+  background: linear-gradient(to bottom, #1a1a1a, #0d0d0d, #000000); /* Темный градиент для фона под GIF */
+  min-height: 100vh;
+  position: fixed;
+  width: 100%; height: 100%;
+  z-index: -1; /* Фон под контентом */
+  cursor: url('https://static.wikia.nocookie.net/devilmaycry/images/1/1d/Rebellion_Awakened_DMC3.png/revision/latest/scale-to-width/32?cb=20190523103320'), auto;
+}
+
+#root {
+  background: url(https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGRkcjh3aGtncjJ6b2Z1Nm44bHljbWdtNmlpcGp1eWU2c2MxNGJyZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1pAe8bYGnxmHAbqTR3/giphy.gif) no-repeat center center fixed; /* Основная фоновая GIF */
+  background-size: cover;
+  opacity: 1;
+  image-rendering: auto;
+  backdrop-filter: blur(9px); /* Блюр на фон */
+  min-height: 100vh;
+  position: relative; /* Контейнер для контента */
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  z-index: 0; /* Над фоном, но под контентом */
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: linear-gradient(120deg, rgba(20,10,10,0.3) 0%, rgba(30,15,15,0.4) 100%); /* Дополнительный градиентный слой */
+  opacity: 0.7;
+  animation: overlayFadeIn 1.2s ease forwards, overlayMove 20s linear infinite alternate; /* Анимации */
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  z-index: 0; /* Над фоном, но под контентом */
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: url('https://i.imgur.com/8XZQZQZ.png') repeat; /* Текстурный слой */
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+@keyframes overlayFadeIn {
+  to { opacity: 0.7; }
+}
+@keyframes overlayMove {
+  from { background-position: 0 0; }
+  to { background-position: 100px 100px; }
+}
+
+/* === Основные контейнеры === */
+.sidebar,
+.header,
+.container__content,
+.bottom-panel,
+.home__content,
+.catalogue,
+.settings__container {
+  background: rgba(20, 10, 10, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 10px rgba(255, 0, 0, 0.1), 0 0 20px rgba(255, 0, 0, 0.2); /* Усиленные тени и свечение */
+  color: var(--dmc-text-light);
+  transition: all var(--dmc-transition-duration) ease; /* Плавные переходы */
+  position: relative;
+}
+
+.sidebar::before,
+.header::before,
+.container__content::before,
+.bottom-panel::before,
+.home__content::before,
+.catalogue::before,
+.settings__container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 2px solid transparent;
+  border-image: linear-gradient(45deg, var(--dmc-red-glow-light), transparent, var(--dmc-red-glow-light)) 1;
+  border-radius: 16px; /* Такой же радиус, как у контейнера */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dmc-transition-duration) ease;
+}
+
+.sidebar:hover,
+.header:hover,
+.container__content:hover,
+.bottom-panel:hover,
+.home__content:hover,
+.catalogue:hover,
+.settings__container:hover {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(255, 0, 0, 0.2), 0 0 30px rgba(255, 0, 0, 0.4); /* Еще более усиленные тени и свечение */
+  transform: translateY(-3px); /* Небольшое поднятие */
+}
+
+.sidebar:hover::before,
+.header:hover::before,
+.container__content:hover::before,
+.bottom-panel:hover::before,
+.home__content:hover::before,
+.catalogue:hover::before,
+.settings__container:hover::before {
+    opacity: 1; /* Показываем рамку при наведении */
+}
+
+.container__content::after,
+.home__content::after,
+.catalogue::after,
+.settings__container::after {
+    content: '';
+    position: absolute;
+    top: 10px; left: 10px;
+    width: 20px; height: 20px;
+    border-top: 2px solid var(--dmc-red);
+    border-left: 2px solid var(--dmc-red);
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.container__content:hover::after,
+.home__content:hover::after,
+.catalogue:hover::after,
+.settings__container:hover::after {
+    opacity: 0.6;
+}
+
+/* === Карточки, списки, фильтры и другие внутренние элементы === */
+.text-field-container__text-field--dark,
+.text-field-container__text-field--primary,
+.header__search,
+.game-item,
+.settings__content,
+.catalogue__filters-container,
+.friends-box__box,
+.user-stats__box,
+.recent-games__box,
+.gallery-slider__container,
+.list,
+.game-details__description-container,
+.content-sidebar {
+  background: rgba(30, 15, 15, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(255, 0, 0, 0.1); /* Умеренные тени и легкое внутреннее свечение */
+  border: 1px solid rgba(255, 0, 0, 0.15);
+  transition: all var(--dmc-transition-duration) ease; /* Плавные переходы */
+  position: relative;
+  overflow-y: auto; /* Разрешаем вертикальную прокрутку */
+  overflow-x: hidden; /* Скрываем горизонтальную прокрутку */
+}
+
+.description-header {
+    background: rgba(30, 15, 15, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(255, 0, 0, 0.1); /* Умеренные тени и легкое внутреннее свечение */
+    border: 1px solid rgba(255, 0, 0, 0.15);
+    transition: all var(--dmc-transition-duration) ease; /* Плавные переходы */
+    position: relative;
+    /* Здесь нет overflow */
+}
+
+.game-item:hover, .sidebar-section__button:hover, .list__item:hover {
+    transform: translateY(-2px); /* Сохраняем небольшое поднятие */
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 0, 0, 0.15), 0 0 15px rgba(255, 0, 0, 0.3); /* Усиленные тени и свечение при наведении */
+    border-color: var(--dmc-red); /* Красная рамка при наведении */
+}
+
+.profile-hero__user-information,
+.profile-hero__user-status {
+  position: relative; /* Обеспечиваем контекст наложения */
+  z-index: 1; /* Поднимаем над фоном */
+}
+
+.profile-avatar-container {
+  position: relative !important;
+  width: 96px !important;
+  height: 96px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-radius: 0 !important; /* Квадратный контейнер */
+  overflow: visible !important; /* Показываем рамку за пределами */
+  z-index: 1 !important;
+  border: none !important; /* Убираем основную рамку с контейнера */
+  box-shadow: none !important; /* Убираем основное свечение */
+}
+
+.profile-avatar-container::before {
+  content: "" !important;
+  position: absolute !important;
+  top: -8px !important; /* Регулируем позицию рамки */
+  left: -8px !important;
+  right: -8px !important;
+  bottom: -8px !important;
+  background-image: url("https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/items/2694420/18457fff7164f6f3b867650ffdda28d229126960.png") !important; /* GIF рамка */
+  background-size: 120% 120% !important; /* Растягиваем рамку */
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  z-index: 2 !important; /* Рамка поверх аватарки */
+  pointer-events: none !important; /* Позволяем кликать сквозь */
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important; /* Свечение */
+}
+
+.profile-avatar {
+  width: 96px !important; /* Размер самой аватарки */
+  height: 96px !important;
+  border-radius: 0 !important; /* Квадратная форма */
+  overflow: hidden !important;
+  z-index: 1 !important; /* Аватарка под рамкой */
+  position: relative !important;
+  border: none !important; /* Убираем рамку с самой аватарки */
+}
+
+.profile-avatar__image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0 !important; /* Квадратное изображение */
+}
+
+/* Стили для аватарки в профиле */
+.profile-hero__avatar-button .profile-avatar-container {
+  position: relative !important;
+  width: 96px !important;
+  height: 96px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-radius: 0 !important; /* Квадратный контейнер */
+  overflow: visible !important; /* Показываем рамку за пределами */
+  z-index: 1 !important;
+  border: none !important; /* Убираем основную рамку с контейнера */
+  box-shadow: none !important; /* Убираем основное свечение */
+}
+
+.profile-hero__avatar-button .profile-avatar-container::before {
+  content: "" !important;
+  position: absolute !important;
+  top: -8px !important; /* Регулируем позицию рамки */
+  left: -8px !important;
+  right: -8px !important;
+  bottom: -8px !important;
+  background-image: url("https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/items/2694420/18457fff7164f6f3b867650ffdda28d229126960.png") !important; /* GIF рамка */
+  background-size: 120% 120% !important; /* Растягиваем рамку */
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  z-index: 2 !important; /* Рамка поверх аватарки */
+  pointer-events: none !important; /* Позволяем кликать сквозь */
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important; /* Свечение */
+}
+
+.profile-hero__avatar-button .profile-avatar {
+  width: 96px !important; /* Размер самой аватарки */
+  height: 96px !important;
+  border-radius: 0 !important; /* Квадратная форма */
+  overflow: hidden !important;
+  z-index: 1 !important; /* Аватарка под рамкой */
+  position: relative !important;
+  border: none !important; /* Убираем рамку с самой аватарки */
+}
+
+.profile-hero__avatar-button .profile-avatar__image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0 !important; /* Квадратное изображение */
+}
+
+/* Стили для аватарки в сайдбаре */
+.sidebar-profile__button-content .profile-avatar-container {
+    width: 35px !important;
+    height: 35px !important;
+    border-radius: 50% !important; /* Круглая форма */
+    overflow: hidden !important;
+    border: none !important;
+    box-shadow: none !important;
+    z-index: auto !important;
+    position: relative !important;
+}
+
+.sidebar-profile__button-content .profile-avatar-container::before {
+    display: none !important; /* Скрываем рамку в сайдбаре */
+}
+
+.sidebar-profile__button-content .profile-avatar {
+    width: 35px !important;
+    height: 35px !important;
+    border-radius: 50% !important; /* Круглая форма */
+    overflow: hidden !important;
+    border: none !important;
+    box-shadow: none !important;
+    z-index: auto !important;
+    position: relative !important;
+}
+
+.sidebar-profile__button-content .profile-avatar__image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 50% !important; /* Круглая форма изображения */
+}
+
+/* === Мелкие элементы и разделители === */
+.sidebar__handle,
+.sidebar__divider,
+.sidebar__footer,
+.sidebar__user,
+.catalogue__divider,
+.settings__divider,
+.bottom-panel__handle,
+.friends-box__handle,
+.user-stats__handle,
+.recent-games__handle {
+  background: rgba(50, 10, 10, 0.4);
+  border-radius: 8px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.4), inset 0 0 4px rgba(255, 0, 0, 0.05); /* Тени и легкое внутреннее свечение */
+  border: 1px solid rgba(255, 0, 0, 0.15);
+  transition: all var(--dmc-transition-duration) ease; /* Плавные переходы */
+}
+
+.sidebar__handle:hover,
+.sidebar__divider:hover,
+.sidebar__footer:hover,
+.sidebar__user:hover,
+.catalogue__divider:hover,
+.settings__divider:hover,
+.bottom-panel__handle:hover,
+.friends-box__handle:hover,
+.user-stats__handle:hover,
+.recent-games__handle:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 0, 0, 0.2), inset 0 0 6px rgba(255, 0, 0, 0.1); /* Усиленные тени и свечение при наведении */
+    transform: translateY(-2px); /* Небольшое поднятие */
+}
+
+.divider {
+  height: 1px;
+  background: rgba(255, 0, 0, 0.1);
+  margin: 16px 0;
+  border: none;
+  position: relative; /* Для позиционирования псевдо-элемента */
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px; /* Чуть толще основной линии */
+    background: linear-gradient(to right, var(--dmc-red-glow-medium), transparent); /* Градиентная линия */
+    transform: translateY(-50%);
+    opacity: 0.7;
+}
+
+/* === Кнопки и интерактивные элементы === */
+.container__content .button--outline,
+.settings-download-sources__item,
+.download-group__item {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #555;
+  color: var(--dmc-text-light);
+  padding: 10px 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all var(--dmc-transition-duration) ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 0 4px rgba(255, 0, 0, 0.05); /* Умеренная тень и легкое внутреннее свечение */
+}
+
+.container__content .button--outline::before,
+.settings-download-sources__item::before,
+.download-group__item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.08), transparent); /* Уменьшена прозрачность блика */
+  transition: left 0.5s ease;
+}
+
+.container__content .button--outline:hover,
+.settings-download-sources__item:hover,
+.download-group__item:hover {
+  background: rgba(255, 0, 0, 0.2); /* Красный фон при наведении */
+  border-color: var(--dmc-red); /* Красная рамка при наведении */
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium), 0 0 25px var(--dmc-red-glow-light), inset 0 0 8px rgba(255, 0, 0, 0.1); /* Усиленное свечение и внутренняя тень */
+  transform: translateY(-2px); /* Легкое поднятие при наведении */
+}
+
+.container__content .button--outline:hover::before,
+.settings-download-sources__item:hover::before,
+.download-group__item:hover::before {
+  left: 100%; /* Анимация блика */
+}
+
+.container__content .button--outline:active,
+.settings-download-sources__item:active,
+.download-group__item:active {
+  background: rgba(255, 0, 0, 0.3); /* Более темный фон при нажатии */
+  border-color: var(--dmc-red); /* Красная рамка при нажатии */
+  box-shadow: 0 0 10px var(--dmc-red-glow-light), inset 0 0 5px var(--dmc-red-glow-medium); /* Свечение и внутренняя тень при нажатии */
+  transform: translateY(1px); /* Эффект нажатия */
+}
+
+@keyframes glow {
+  0% { 
+    text-shadow: 0 0 5px var(--dmc-red-glow-light);
+    box-shadow: 0 0 5px var(--dmc-red-glow-light);
+  }
+  100% { 
+    text-shadow: 0 0 15px var(--dmc-red-glow-strong);
+    box-shadow: 0 0 15px var(--dmc-red-glow-strong);
+  }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 5px var(--dmc-red-glow-light); }
+  50% { box-shadow: 0 0 15px var(--dmc-red-glow-medium); }
+  100% { box-shadow: 0 0 5px var(--dmc-red-glow-light); }
+}
+
+.pulse-hover:hover {
+  animation: pulse 0.8s infinite alternate;
+}
+
+/* === Стили для основных кнопок === */
+.button--primary,
+.requirement__button {
+  background: linear-gradient(45deg, var(--dmc-red), #ff3333); /* Красный градиент */
+  border: none;
+  color: var(--dmc-text-light);
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all var(--dmc-transition-duration) ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px var(--dmc-red-glow-medium), 0 0 10px var(--dmc-red), inset 0 0 8px rgba(255, 0, 0, 0.1); /* Тени и свечение с внутренним свечением */
+}
+
+.button--primary::before,
+.requirement__button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); /* Уменьшена прозрачность блика */
+  transform: translateY(-50%) rotate(30deg);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.button--primary:hover,
+.requirement__button:hover {
+  background: linear-gradient(45deg, #ff3333, var(--dmc-red)); /* Инверсия градиента при наведении */
+  box-shadow: 0 4px 24px var(--dmc-red-glow-strong), 0 0 15px var(--dmc-red), inset 0 0 10px rgba(255, 0, 0, 0.2); /* Усиленные тени и свечение */
+}
+
+.button--primary:hover::before,
+.requirement__button:hover::before {
+  left: 100%; /* Анимация блика */
+}
+
+.button--primary:active,
+.requirement__button:active {
+  background: var(--dmc-red); /* Сплошной красный при нажатии */
+  box-shadow: 0 2px 12px var(--dmc-red-glow-light), inset 0 0 8px var(--dmc-red-glow-medium); /* Свечение и внутренняя тень при нажатии */
+  transform: translateY(1px); /* Эффект нажатия */
+}
+
+.button--primary:focus,
+.requirement__button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--dmc-red-glow-light);
+}
+
+/* === Иконки для кнопок === */
+.button--play::before,
+.button--profile::before,
+.button--settings::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0) 70%); /* Эффект свечения иконки */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dmc-transition-duration) ease;
+}
+
+.button--play:hover::before,
+.button--profile:hover::before,
+.button--settings:hover::before {
+    opacity: 1; /* Показываем свечение при наведении */
+}
+
+/* === Текстовые элементы === */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', 'Nunito', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--dmc-text-light);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6), 0 0 8px var(--dmc-red); /* Тени и свечение текста */
+  font-size: 1.5rem;
+  font-weight: 700;
+  position: relative; /* Для позиционирования псевдо-элементов */
+  padding-left: 20px; /* Отступ для декоративной линии */
+}
+
+h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px; /* Длина линии */
+  height: 3px; /* Толщина линии */
+  background-color: var(--dmc-red);
+  box-shadow: 0 0 8px var(--dmc-red-glow-medium);
+}
+
+.glow-text {
+  animation: glow 1.5s infinite alternate;
+}
+
+/* === Новые стили для DMC === */
+.dmc-style-text {
+  font-family: 'Poppins', sans-serif;
+  color: var(--dmc-red);
+  text-shadow: 0 0 10px var(--dmc-red-glow-medium); /* Красное свечение текста */
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.dmc-style-border {
+  border: 2px solid var(--dmc-red);
+  box-shadow: 0 0 10px var(--dmc-red-glow-light); /* Красная рамка со свечением */
+}
+
+.dmc-style-glow {
+  animation: glow 2s infinite alternate;
+}
+
+/* Переопределение анимации glow для соответствия DMC */
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px var(--dmc-red), 0 0 10px var(--dmc-red), 0 0 15px var(--dmc-red);
+  }
+  to {
+    box-shadow: 0 0 10px var(--dmc-red), 0 0 20px var(--dmc-red), 0 0 30px var(--dmc-red);;
+  }
+}
+
+/* === Анимации появления === */
+.game-item {
+  opacity: 0;
+  animation: fadeInScale 0.6s ease forwards;
+  background: rgba(30, 15, 15, 0.7); /* Сохраняем фон */
+  border-radius: 12px; /* Сохраняем радиус */
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(255, 0, 0, 0.1); /* Сохраняем тени */
+  border: 1px solid rgba(255, 0, 0, 0.15); /* Сохраняем рамку */
+  transition: all var(--dmc-transition-duration) ease; /* Сохраняем переход */
+  position: relative; /* Нужен для псевдо-элементов */
+  overflow: hidden; /* Нужен для эффектов */
+}
+
+.game-item::after { /* Декоративный элемент для game-item */
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border: 2px solid transparent;
+    border-image: linear-gradient(45deg, transparent, var(--dmc-red-glow-medium), transparent) 1;
+    border-radius: 12px; /* Соответствует радиусу game-item */
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dmc-transition-duration) ease;
+    animation: borderPulse 2s infinite alternate ease-in-out; /* Анимация пульсации рамки */
+}
+
+@keyframes borderPulse {
+    0% { border-image: linear-gradient(45deg, transparent, rgba(255, 0, 0, 0.3), transparent) 1; opacity: 0.5; }
+    50% { border-image: linear-gradient(45deg, rgba(255, 0, 0, 0.6), transparent, rgba(255, 0, 0, 0.6)) 1; opacity: 1; }
+    100% { border-image: linear-gradient(45deg, transparent, rgba(255, 0, 0, 0.3), transparent) 1; opacity: 0.5; }
+}
+
+.game-item:hover {
+    transform: translateY(-4px); /* Чуть большее поднятие при наведении */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(255, 0, 0, 0.2), 0 0 20px rgba(255, 0, 0, 0.4); /* Более сильное свечение и тени */
+    border-color: var(--dmc-red); /* Красная рамка при наведении */
+    animation: none; /* Отключаем animation quickPulse если была */
+}
+
+.game-item:hover::after {
+    opacity: 1; /* Показываем анимированную рамку при наведении */
+}
+
+.container__content,
+.home__content,
+.catalogue,
+.settings__container,
+.settings__content {
+  animation: slideInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Анимации для интерактивных элементов */
+/* Убираем quickPulse, заменим на другие эффекты */
+/* @keyframes quickPulse { */
+/*   0% { transform: scale(1); } */
+/*   50% { transform: scale(1.02); } */
+/*   100% { transform: scale(1); } */
+/* } */
+
+/* subtle глитч эффект при наведении на кнопки */
+.button--primary:hover,
+.container__content .button--outline:hover {
+  animation: subtleGlitch 0.5s infinite alternate steps(2, start);
+}
+
+@keyframes subtleGlitch {
+  0% { transform: translate(1px, 1px); }
+  25% { transform: translate(-1px, -1px); }
+  50% { transform: translate(1.5px, 1.5px); }
+  75% { transform: translate(-0.5px, -0.5px); }
+  100% { transform: translate(1px, 1px); }
+}
+
+/* === Скроллбар === */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(30, 10, 10, 0.2);
+  border-radius: 10px;
+  margin: 2px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--dmc-scrollbar-thumb);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dmc-scrollbar-thumb-hover);
+}
+
+.sidebar-section__button {
+  transform: none !important;
+  margin: 0;
+  padding: 8px 12px;
+  width: 100%;
+  text-align: left;
+  background: rgba(50, 10, 10, 0.4);
+  border: 1px solid rgba(255, 0, 0, 0.15);
+  transition: all var(--dmc-transition-duration) ease; /* Плавный переход */
+}
+
+.sidebar-section__button:hover {
+  background: rgba(80, 20, 20, 0.5);
+  box-shadow: 0 4px 16px 0 rgba(255, 0, 0, 0.2);
+  border-color: var(--dmc-red);
+  transform: none !important;
+}
+
+/* === Стили для элементов списка достижений === */
+.list__item {
+  background: rgba(30, 15, 15, 0.7);
+  border: 1px solid rgba(255, 0, 0, 0.15);
+  border-radius: 8px;
+  margin: 4px 0;
+  padding: 8px 12px;
+  transition: all var(--dmc-transition-duration) ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 0 4px rgba(255, 0, 0, 0.05); /* Умеренная тень и легкое внутреннее свечение */
+}
+
+.list__item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 0, 0, 0.1),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.list__item:hover {
+  background: rgba(60, 20, 20, 0.8);
+  border-color: var(--dmc-red);
+  box-shadow: 0 4px 16px 0 var(--dmc-red-glow-light), 0 0 12px var(--dmc-red-glow-medium), inset 0 0 8px rgba(255, 0, 0, 0.2); /* Усиленное свечение и внутренняя тень */
+  transform: translateX(4px); /* Сдвиг при наведении */
+  animation: listItemHover 0.5s ease forwards; /* Новая анимация при наведении */
+}
+
+@keyframes listItemHover {
+    from { transform: translateX(0); }
+    to { transform: translateX(4px); }
+}
+
+.list__item:hover::before {
+  left: 100%; /* Анимация блика */
+}
+
+.list__item--completed {
+  border-left: 3px solid rgba(0, 255, 0, 0.5);
+  background: rgba(0, 255, 0, 0.05);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3), inset 0 0 5px rgba(0, 255, 0, 0.2); /* Зеленое свечение и внутренняя тень */
+}
+
+.list__item--completed:hover {
+  background: rgba(0, 255, 0, 0.1);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5), inset 0 0 8px rgba(0, 255, 0, 0.3); /* Более сильное свечение */
+}
+
+/* Apply glowing effect to relevant elements on hover/focus/active */
+.sidebar-section__button:hover {
+  box-shadow: 0 0 8px var(--dmc-red-glow-light), 0 0 12px rgba(255, 0, 0, 0.2); /* Свечение на кнопке сайдбара */
+}
+
+.list__item:hover {
+  box-shadow: 0 0 10px var(--dmc-red-glow-light);
+  border-color: var(--dmc-red);
+}
+
+.list__item--completed {
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+  border-color: rgba(0, 255, 0, 0.5);
+}
+
+.list__item--completed:hover {
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+
+/* === Элементы управления формой (Input, Checkbox, Slider) === */
+/* Общие стили для полей ввода */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea {
+  background-color: rgba(30, 15, 15, 0.7);
+  border: 1px solid rgba(255, 0, 0, 0.15);
+  border-radius: 8px;
+  color: var(--dmc-text-light);
+  padding: 8px 12px;
+  font-size: 1rem;
+  transition: all var(--dmc-transition-duration) ease;
+  box-shadow: inset 0 0 5px rgba(255, 0, 0, 0.1);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--dmc-red);
+  box-shadow: inset 0 0 8px rgba(255, 0, 0, 0.3), 0 0 10px var(--dmc-red-glow-medium);
+}
+
+/* Стили для чекбоксов */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 0, 0, 0.5);
+  border-radius: 4px;
+  background-color: rgba(30, 15, 15, 0.5);
+  cursor: pointer;
+  position: relative;
+  transition: all var(--dmc-transition-duration) ease;
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+}
+
+input[type="checkbox"]::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--dmc-text-light);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity var(--dmc-transition-duration) ease;
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--dmc-red);
+  border-color: var(--dmc-red);
+  box-shadow: 0 0 8px var(--dmc-red-glow-medium);
+}
+
+input[type="checkbox"]:checked::after {
+  opacity: 1;
+}
+
+input[type="checkbox"]:hover {
+    border-color: var(--dmc-red);
+    box-shadow: 0 0 8px var(--dmc-red-glow-light);
+}
+
+/* Стили для ползунков (sliders) */
+input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: rgba(30, 15, 15, 0.7);
+  border-radius: 5px;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity .2s;
+  box-shadow: inset 0 0 5px rgba(255, 0, 0, 0.1);
+}
+
+input[type="range"]:hover {
+  opacity: 1;
+}
+
+/* Thumb (ручка ползунка) */
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--dmc-red);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--dmc-red-glow-medium);
+  transition: box-shadow var(--dmc-transition-duration) ease;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--dmc-red);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--dmc-red-glow-medium);
+  transition: box-shadow var(--dmc-transition-duration) ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover,
+input[type="range"]::-moz-range-thumb:hover {
+  box-shadow: 0 0 12px var(--dmc-red-glow-strong);
+}
+
+/* Также применяем стили прокрутки к конкретным контейнерам, если необходимо */
+.catalogue,
+.home__content,
+.settings__container {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+      </style></head>
+  <body>
+    <div id="root"><div class="title-bar"><h4>Hydra</h4></div><main><aside class="sidebar" style="width: 268px; min-width: 268px; max-width: 268px;"><div class="sidebar__container"><div class="sidebar-profile"><button type="button" class="sidebar-profile__button"><div class="sidebar-profile__button-content"><div class="profile-avatar" style="width: 35px; height: 35px;"><img class="profile-avatar__image" alt="Kizayran" src="https://cdn.losbroxas.org/8b025208-9f73-4990-ae4c-a6949893ceae.jpg" width="35" height="35"></div><div class="sidebar-profile__button-information"><p class="sidebar-profile__button-title">Kizayran</p></div></div></button><button type="button" class="sidebar-profile__friends-button" title="Друзья"><svg aria-hidden="true" focusable="false" class="octicon octicon-people" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.508 5.508 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4 4 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.493 3.493 0 0 1 2 5.5ZM11 4a3.001 3.001 0 0 1 2.22 5.018 5.01 5.01 0 0 1 2.56 3.012.749.749 0 0 1-.885.954.752.752 0 0 1-.549-.514 3.507 3.507 0 0 0-2.522-2.372.75.75 0 0 1-.574-.73v-.352a.75.75 0 0 1 .416-.672A1.5 1.5 0 0 0 11 5.5.75.75 0 0 1 11 4Zm-5.5-.5a2 2 0 1 0-.001 3.999A2 2 0 0 0 5.5 3.5Z"></path></svg></button></div><div class="sidebar__content"><section class="sidebar__section"><ul class="sidebar__menu"><li class="sidebar__menu-item"><button type="button" class="sidebar__menu-item-button"><svg aria-hidden="true" focusable="false" class="octicon octicon-home" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"></path></svg><span>Главная</span></button></li><li class="sidebar__menu-item"><button type="button" class="sidebar__menu-item-button"><svg aria-hidden="true" focusable="false" class="octicon octicon-apps" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M1.5 3.25c0-.966.784-1.75 1.75-1.75h2.5c.966 0 1.75.784 1.75 1.75v2.5A1.75 1.75 0 0 1 5.75 7.5h-2.5A1.75 1.75 0 0 1 1.5 5.75Zm7 0c0-.966.784-1.75 1.75-1.75h2.5c.966 0 1.75.784 1.75 1.75v2.5a1.75 1.75 0 0 1-1.75 1.75h-2.5A1.75 1.75 0 0 1 8.5 5.75Zm-7 7c0-.966.784-1.75 1.75-1.75h2.5c.966 0 1.75.784 1.75 1.75v2.5a1.75 1.75 0 0 1-1.75 1.75h-2.5a1.75 1.75 0 0 1-1.75-1.75Zm7 0c0-.966.784-1.75 1.75-1.75h2.5c.966 0 1.75.784 1.75 1.75v2.5a1.75 1.75 0 0 1-1.75 1.75h-2.5a1.75 1.75 0 0 1-1.75-1.75ZM3.25 3a.25.25 0 0 0-.25.25v2.5c0 .138.112.25.25.25h2.5A.25.25 0 0 0 6 5.75v-2.5A.25.25 0 0 0 5.75 3Zm7 0a.25.25 0 0 0-.25.25v2.5c0 .138.112.25.25.25h2.5a.25.25 0 0 0 .25-.25v-2.5a.25.25 0 0 0-.25-.25Zm-7 7a.25.25 0 0 0-.25.25v2.5c0 .138.112.25.25.25h2.5a.25.25 0 0 0 .25-.25v-2.5a.25.25 0 0 0-.25-.25Zm7 0a.25.25 0 0 0-.25.25v2.5c0 .138.112.25.25.25h2.5a.25.25 0 0 0 .25-.25v-2.5a.25.25 0 0 0-.25-.25Z"></path></svg><span>Каталог</span></button></li><li class="sidebar__menu-item"><button type="button" class="sidebar__menu-item-button"><svg aria-hidden="true" focusable="false" class="octicon octicon-download" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14Z"></path><path d="M7.25 7.689V2a.75.75 0 0 1 1.5 0v5.689l1.97-1.969a.749.749 0 1 1 1.06 1.06l-3.25 3.25a.749.749 0 0 1-1.06 0L4.22 6.78a.749.749 0 1 1 1.06-1.06l1.97 1.969Z"></path></svg><span>Загрузки</span></button></li><li class="sidebar__menu-item sidebar__menu-item--active"><button type="button" class="sidebar__menu-item-button"><svg aria-hidden="true" focusable="false" class="octicon octicon-gear" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M8 0a8.2 8.2 0 0 1 .701.031C9.444.095 9.99.645 10.16 1.29l.288 1.107c.018.066.079.158.212.224.231.114.454.243.668.386.123.082.233.09.299.071l1.103-.303c.644-.176 1.392.021 1.82.63.27.385.506.792.704 1.218.315.675.111 1.422-.364 1.891l-.814.806c-.049.048-.098.147-.088.294.016.257.016.515 0 .772-.01.147.038.246.088.294l.814.806c.475.469.679 1.216.364 1.891a7.977 7.977 0 0 1-.704 1.217c-.428.61-1.176.807-1.82.63l-1.102-.302c-.067-.019-.177-.011-.3.071a5.909 5.909 0 0 1-.668.386c-.133.066-.194.158-.211.224l-.29 1.106c-.168.646-.715 1.196-1.458 1.26a8.006 8.006 0 0 1-1.402 0c-.743-.064-1.289-.614-1.458-1.26l-.289-1.106c-.018-.066-.079-.158-.212-.224a5.738 5.738 0 0 1-.668-.386c-.123-.082-.233-.09-.299-.071l-1.103.303c-.644.176-1.392-.021-1.82-.63a8.12 8.12 0 0 1-.704-1.218c-.315-.675-.111-1.422.363-1.891l.815-.806c.05-.048.098-.147.088-.294a6.214 6.214 0 0 1 0-.772c.01-.147-.038-.246-.088-.294l-.815-.806C.635 6.045.431 5.298.746 4.623a7.92 7.92 0 0 1 .704-1.217c.428-.61 1.176-.807 1.82-.63l1.102.302c.067.019.177.011.3-.071.214-.143.437-.272.668-.386.133-.066.194-.158.211-.224l.29-1.106C6.009.645 6.556.095 7.299.03 7.53.01 7.764 0 8 0Zm-.571 1.525c-.036.003-.108.036-.137.146l-.289 1.105c-.147.561-.549.967-.998 1.189-.173.086-.34.183-.5.29-.417.278-.97.423-1.529.27l-1.103-.303c-.109-.03-.175.016-.195.045-.22.312-.412.644-.573.99-.014.031-.021.11.059.19l.815.806c.411.406.562.957.53 1.456a4.709 4.709 0 0 0 0 .582c.032.499-.119 1.05-.53 1.456l-.815.806c-.081.08-.073.159-.059.19.162.346.353.677.573.989.02.03.085.076.195.046l1.102-.303c.56-.153 1.113-.008 1.53.27.161.107.328.204.501.29.447.222.85.629.997 1.189l.289 1.105c.029.109.101.143.137.146a6.6 6.6 0 0 0 1.142 0c.036-.003.108-.036.137-.146l.289-1.105c.147-.561.549-.967.998-1.189.173-.086.34-.183.5-.29.417-.278.97-.423 1.529-.27l1.103.303c.109.029.175-.016.195-.045.22-.313.411-.644.573-.99.014-.031.021-.11-.059-.19l-.815-.806c-.411-.406-.562-.957-.53-1.456a4.709 4.709 0 0 0 0-.582c-.032-.499.119-1.05.53-1.456l.815-.806c.081-.08.073-.159.059-.19a6.464 6.464 0 0 0-.573-.989c-.02-.03-.085-.076-.195-.046l-1.102.303c-.56.153-1.113.008-1.53-.27a4.44 4.44 0 0 0-.501-.29c-.447-.222-.85-.629-.997-1.189l-.289-1.105c-.029-.11-.101-.143-.137-.146a6.6 6.6 0 0 0-1.142 0ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM9.5 8a1.5 1.5 0 1 0-3.001.001A1.5 1.5 0 0 0 9.5 8Z"></path></svg><span>Настройки</span></button></li></ul></section><section class="sidebar__section"><small class="sidebar__section-title">Избранное</small><ul class="sidebar__menu"><li class="sidebar__menu-item"><button type="button" class="sidebar__menu-item-button"><img class="sidebar__game-icon" src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/601150/b90a5a5e6d9794b6379fb43aeb8b484832534e7b.ico" alt="Devil May Cry 5" loading="lazy"><span class="sidebar__menu-item-button-label">Devil May Cry 5</span></button></li><li class="sidebar__menu-item"><button type="button" class="sidebar__menu-item-button"><img class="sidebar__game-icon" src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/1888930/d96ad9122c1a297b00efe2f8ae911be21c7b66c1.ico" alt="The Last of Us™ Part I" loading="lazy"><span class="sidebar__menu-item-button-label">The Last of Us™ Part I</span></button></li></ul></section><section class="sidebar__section"><small class="sidebar__section-title">Библиотека</small><div class="text-field-container"><div class="text-field-container__text-field-wrapper"><div class="text-field-container__text-field text-field-container__text-field--dark"><input id=":r0:" class="text-field-container__text-field-input" placeholder="Поиск" type="text"></div></div></div><ul class="sidebar__menu"><li class="sidebar__menu-item"><button type="button" class="sidebar__menu-item-button"><img class="sidebar__game-icon" src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/329050/e147017ba237547e7d07cb687325432764e5944e.ico" alt="Devil May Cry 4 Special Edition" loading="lazy"><span class="sidebar__menu-item-button-label">Devil May Cry 4 Special Edition</span></button></li><li class="sidebar__menu-item"><button type="button" class="sidebar__menu-item-button"><img class="sidebar__game-icon" src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/631510/414bc448b75e1f2d992c50afa28fb5446202c602.ico" alt="Devil May Cry HD Collection" loading="lazy"><span class="sidebar__menu-item-button-label">Devil May Cry HD Collection</span></button></li></ul></section></div></div><button type="button" class="sidebar__handle"></button></aside><article class="container"><header class="header header--is-windows"><section class="header__section header__section--left"><button type="button" class="header__back-button header__back-button--enabled"><svg aria-hidden="true" focusable="false" class="octicon octicon-arrow-left" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M7.78 12.53a.75.75 0 0 1-1.06 0L2.47 8.28a.75.75 0 0 1 0-1.06l4.25-4.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L4.81 7h7.44a.75.75 0 0 1 0 1.5H4.81l2.97 2.97a.75.75 0 0 1 0 1.06Z"></path></svg></button><h3 class="header__title header__title--has-back-button">Настройки</h3></section><section class="header__section"><div class="header__search"><button type="button" class="header__action-button"><svg aria-hidden="true" focusable="false" class="octicon octicon-search" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7Z"></path></svg></button><input type="text" name="search" placeholder="Поиск" class="header__search-input" value=""></div></section></header><section class="container__content"><section class="settings__container"><div class="settings__content"><section class="settings__categories"><button type="button" class="button button--outline">Основные</button><button type="button" class="button button--outline">Поведение</button><button type="button" class="button button--outline">Источники загрузки</button><button type="button" class="button button--primary">Внешний вид</button><button type="button" class="button button--outline">TorBox</button><button type="button" class="button button--outline">Real-Debrid</button><button type="button" class="button button--outline">Аккаунт</button></section><h2>Внешний вид</h2><div class="settings-appearance"><div class="settings-appearance__actions"><div class="settings-appearance__actions-left"><button type="button" class="button button--primary settings-appearance__button"><svg aria-hidden="true" focusable="false" class="octicon octicon-globe" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM5.78 8.75a9.64 9.64 0 0 0 1.363 4.177c.255.426.542.832.857 1.215.245-.296.551-.705.857-1.215A9.64 9.64 0 0 0 10.22 8.75Zm4.44-1.5a9.64 9.64 0 0 0-1.363-4.177c-.307-.51-.612-.919-.857-1.215a9.927 9.927 0 0 0-.857 1.215A9.64 9.64 0 0 0 5.78 7.25Zm-5.944 1.5H1.543a6.507 6.507 0 0 0 4.666 5.5c-.123-.181-.24-.365-.352-.552-.715-1.192-1.437-2.874-1.581-4.948Zm-2.733-1.5h2.733c.144-2.074.866-3.756 1.58-4.948.12-.197.237-.381.353-.552a6.507 6.507 0 0 0-4.666 5.5Zm10.181 1.5c-.144 2.074-.866 3.756-1.58 4.948-.12.197-.237.381-.353.552a6.507 6.507 0 0 0 4.666-5.5Zm2.733-1.5a6.507 6.507 0 0 0-4.666-5.5c.123.181.24.365.353.552.714 1.192 1.436 2.874 1.58 4.948Z"></path></svg>Веб-магазин</button><button type="button" class="button button--danger settings-appearance__button"><svg aria-hidden="true" focusable="false" class="octicon octicon-trash" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z"></path></svg>Очистить</button></div><div class="settings-appearance__actions-right"><button type="button" class="button button--outline settings-appearance__button"><svg aria-hidden="true" focusable="false" class="octicon octicon-plus" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z"></path></svg>Создать</button></div></div><div class="settings-appearance__themes"><div class="theme-card theme-card--active"><div class="theme-card__header"><div class="theme-card__header__title">DMC</div></div><p class="theme-card__author">by<button class="theme-card__author__name">kizayran</button></p><div class="theme-card__actions"><div class="theme-card__actions__left"><button type="button" class="button button--dark">Снять тему</button></div><div class="theme-card__actions__right"><button type="button" class="button button--outline" title="Редактировать тему"><svg aria-hidden="true" focusable="false" class="octicon octicon-pencil" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"></path></svg></button><button type="button" class="button button--outline" title="Удалить тему"><svg aria-hidden="true" focusable="false" class="octicon octicon-trash" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z"></path></svg></button></div></div></div><div class="theme-card "><div class="theme-card__header"><div class="theme-card__header__title">All Black</div></div><p class="theme-card__author">by<button class="theme-card__author__name">duduthedemon</button></p><div class="theme-card__actions"><div class="theme-card__actions__left"><button type="button" class="button button--outline">Установить тему</button></div><div class="theme-card__actions__right"><button type="button" class="button button--outline theme-card__actions__right--external" title="Редактировать тему"><svg aria-hidden="true" focusable="false" class="octicon octicon-pencil" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"></path></svg></button><button type="button" class="button button--outline" title="Удалить тему"><svg aria-hidden="true" focusable="false" class="octicon octicon-trash" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"><path d="M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z"></path></svg></button></div></div></div></div></div></div></section></section></article></main><footer class="bottom-panel"><button type="button" class="bottom-panel__downloads-button"><small>Нет активных загрузок</small></button><button data-featurebase-changelog="true" class="bottom-panel__version-button"><small data-featurebase-changelog="true">qjERLZGg - v3.5.1 "Lumen"</small></button></footer></div>
+
+  
+
+<div class="fb-changelog-popup-wrapper fb-changelog-popup-hidden" data-featurebase-widget="" tabindex="-1" style="background: rgb(36, 40, 55); filter: drop-shadow(rgba(0, 0, 0, 0.45) 0px 25px 25px); top: 647px; left: 1409px; height: 350px; max-height: 350px;"><iframe src="https://hydralauncher.featurebase.app/en/widget/changelogWidgetSSR?theme=dark" allow="fullscreen; clipboard-write" class="fb-changelog-popup-iframe" style="background: rgb(36, 40, 55);"></iframe></div><div class="fb-changelog-popup-overlay fb-changelog-popup-overlay-hidden fb-changelog-popup-display-none" data-featurebase-widget="" tabindex="-1" sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation allow-top-navigation-by-user-activation allow-modals" style="background: rgba(16, 18, 25, 0.8);"><iframe src="https://hydralauncher.featurebase.app/en/widget/changelogPopupSSR?theme=dark&amp;name=Kizayran&amp;trackerData=%257B%2522shownChangelogs%2522%253A%255B%25226800c08b69b09206f05a19e9%2522%252C%252267fa90e07f5467f5c1e1eea3%2522%252C%252267f2e23902d7eb8d16c98532%2522%252C%252267d4cd1491a61b2cceed041e%2522%252C%252267cdf81f0275a89ecd773fd1%2522%252C%252267cbb217806a88fa668d16d4%2522%252C%252267c76b313e5e44d2e2ed4a46%2522%252C%25226829014a72c8d0725459b8fc%2522%255D%252C%2522unviewedChangelogs%2522%253A%255B%255D%257D" allow="fullscreen; clipboard-write" class="fb-changelog-popup-overlay-iframe" style="background: rgba(var(--fb-changelog-popup-bg-color), 1); box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 25px; border: 1px solid rgba(var(--fb-changelog-popup-border-color), 1); opacity: 0; pointer-events: none;"></iframe></div><div data-featurebase-widget=""><div id="featurebase-widget-overlay" class="featurebase-widget-overlay fb-widget-fade-in"></div><iframe class="featurebase-widget-iframe featurebase-widget-iframe-right" referrerpolicy="origin" allow="fullscreen; clipboard-write" sandbox="allow-scripts allow-forms allow-storage-access-by-user-activation allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation allow-top-navigation-by-user-activation allow-modals" src="https://hydralauncher.featurebase.app/en/widget?page=MainView"></iframe><button class="fb-widget-fullscreen-x fb-button-x-fade-in fb-widget-fullscreen-x-right"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="#fff" class="featurebase-x-svg-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg></button></div></body></html>
