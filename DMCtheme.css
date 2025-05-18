@@ -1,0 +1,1999 @@
+/* === Подключение шрифтов === */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+/* === CSS Переменные для DMC темы === */
+:root {
+  --dmc-red: #ff0000; /* Основной красный акцент */
+  --dmc-dark-base: rgba(10, 10, 20, 0.9); /* Базовый темный фон */
+  --dmc-dark-medium: rgba(20, 20, 30, 0.9); /* Темный фон для контейнеров */
+  --dmc-dark-semi-transparent: rgba(20, 20, 30, 0.15); /* Полупрозрачный темный */
+  --dmc-dark-more-transparent: rgba(20, 20, 30, 0.10); /* Более прозрачный темный */
+  --dmc-grey-border: rgba(120, 130, 160, 0.18); /* Серый для границ */
+  --dmc-grey-border-semi: rgba(120, 130, 160, 0.12); /* Более прозрачный серый для границ */
+  --dmc-text-light: #e0e0ff; /* Светлый текст */
+  --dmc-text-medium: #c0c0d0; /* Средний текст */
+  --dmc-text-dark: #a0a0b0; /* Темный текст */
+  --dmc-box-shadow: rgba(40, 60, 100, 0.18); /* Тени */
+  --dmc-red-glow-light: rgba(255, 0, 0, 0.3); /* Светлое красное свечение */
+  --dmc-red-glow-medium: rgba(255, 0, 0, 0.5); /* Среднее красное свечение */
+  --dmc-red-glow-strong: rgba(255, 0, 0, 0.8); /* Сильное красное свечение */
+  --dmc-transition-duration: 0.3s; /* Стандартная длительность перехода */
+  --dmc-scrollbar-thumb: rgba(128, 20, 20, 0.6); /* Цвет скроллбара */
+  --dmc-scrollbar-thumb-hover: rgba(180, 30, 30, 0.8); /* Цвет скроллбара при наведении */
+}
+
+/* === Базовые стили body и фон === */
+body {
+  color: var(--dmc-text-light);
+  font-family: 'Poppins', 'Nunito', sans-serif;
+  margin: 0;
+  background: linear-gradient(to bottom, #1a1a1a, #0d0d0d, #000000); /* Темный градиент для фона под GIF */
+  min-height: 100vh;
+  position: fixed;
+  width: 100%; height: 100%;
+  z-index: -1; /* Фон под контентом */
+  cursor: url('https://static.wikia.nocookie.net/devilmaycry/images/1/1d/Rebellion_Awakened_DMC3.png/revision/latest/scale-to-width/32?cb=20190523103320'), auto;
+}
+
+#root {
+  background: url(https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGRkcjh3aGtncjJ6b2Z1Nm44bHljbWdtNmlpcGp1eWU2c2MxNGJyZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1pAe8bYGnxmHAbqTR3/giphy.gif) no-repeat center center fixed; /* Основная фоновая GIF */
+  background-size: cover;
+  opacity: 1;
+  image-rendering: auto;
+  backdrop-filter: blur(9px); /* Блюр на фон */
+  min-height: 100vh;
+  position: relative; /* Контейнер для контента */
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  z-index: 0; /* Над фоном, но под контентом */
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: linear-gradient(120deg, rgba(20,10,10,0.3) 0%, rgba(30,15,15,0.4) 100%); /* Дополнительный градиентный слой */
+  opacity: 0.7;
+  animation: overlayFadeIn 1.2s ease forwards, overlayMove 20s linear infinite alternate; /* Анимации */
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  z-index: 0; /* Над фоном, но под контентом */
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: url('https://i.imgur.com/8XZQZQZ.png') repeat; /* Текстурный слой */
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+@keyframes overlayFadeIn {
+  to { opacity: 0.7; }
+}
+@keyframes overlayMove {
+  from { background-position: 0 0; }
+  to { background-position: 100px 100px; }
+}
+
+/* === Основные контейнеры === */
+.sidebar,
+.header,
+.container__content,
+.bottom-panel,
+.home__content,
+.catalogue,
+.settings__container {
+  background: rgba(20, 10, 10, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 10px rgba(255, 0, 0, 0.1), 0 0 20px rgba(255, 0, 0, 0.2); /* Усиленные тени и свечение */
+  color: var(--dmc-text-light);
+  transition: all var(--dmc-transition-duration) ease; /* Плавные переходы */
+  position: relative;
+}
+
+.sidebar::before,
+.header::before,
+.container__content::before,
+.bottom-panel::before,
+.home__content::before,
+.catalogue::before,
+.settings__container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 2px solid transparent;
+  border-image: linear-gradient(45deg, var(--dmc-red-glow-light), transparent, var(--dmc-red-glow-light)) 1;
+  border-radius: 16px; /* Такой же радиус, как у контейнера */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dmc-transition-duration) ease;
+}
+
+.sidebar:hover,
+.header:hover,
+.container__content:hover,
+.bottom-panel:hover,
+.home__content:hover,
+.catalogue:hover,
+.settings__container:hover {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(255, 0, 0, 0.2), 0 0 30px rgba(255, 0, 0, 0.4); /* Еще более усиленные тени и свечение */
+  transform: translateY(-3px); /* Небольшое поднятие */
+}
+
+.sidebar:hover::before,
+.header:hover::before,
+.container__content:hover::before,
+.bottom-panel:hover::before,
+.home__content:hover::before,
+.catalogue:hover::before,
+.settings__container:hover::before {
+    opacity: 1; /* Показываем рамку при наведении */
+}
+
+.container__content::after,
+.home__content::after,
+.catalogue::after,
+.settings__container::after {
+    content: '';
+    position: absolute;
+    top: 10px; left: 10px;
+    width: 20px; height: 20px;
+    border-top: 2px solid var(--dmc-red);
+    border-left: 2px solid var(--dmc-red);
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.container__content:hover::after,
+.home__content:hover::after,
+.catalogue:hover::after,
+.settings__container:hover::after {
+    opacity: 0.6;
+}
+
+/* === Карточки, списки, фильтры и другие внутренние элементы === */
+.text-field-container__text-field--dark,
+.text-field-container__text-field--primary,
+.header__search,
+.game-item,
+.settings__content,
+.catalogue__filters-container,
+.friends-box__box,
+.user-stats__box,
+.recent-games__box,
+.gallery-slider__container,
+.list,
+.game-details__description-container,
+.content-sidebar {
+  background: rgba(30, 15, 15, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(255, 0, 0, 0.1); /* Умеренные тени и легкое внутреннее свечение */
+  border: 1px solid rgba(255, 0, 0, 0.15);
+  transition: all var(--dmc-transition-duration) ease; /* Плавные переходы */
+  position: relative;
+  overflow-y: auto; /* Разрешаем вертикальную прокрутку */
+  overflow-x: hidden; /* Скрываем горизонтальную прокрутку */
+}
+
+.description-header {
+    background: rgba(30, 15, 15, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(255, 0, 0, 0.1); /* Умеренные тени и легкое внутреннее свечение */
+    border: 1px solid rgba(255, 0, 0, 0.15);
+    transition: all var(--dmc-transition-duration) ease; /* Плавные переходы */
+    position: relative;
+    /* Здесь нет overflow */
+}
+
+.game-item:hover, .sidebar-section__button:hover, .list__item:hover {
+    transform: translateY(-2px); /* Сохраняем небольшое поднятие */
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 0, 0, 0.15), 0 0 15px rgba(255, 0, 0, 0.3); /* Усиленные тени и свечение при наведении */
+    border-color: var(--dmc-red); /* Красная рамка при наведении */
+}
+
+.profile-hero__user-information,
+.profile-hero__user-status {
+  position: relative; /* Обеспечиваем контекст наложения */
+  z-index: 1; /* Поднимаем над фоном */
+}
+
+.profile-avatar-container {
+  position: relative !important;
+  width: 96px !important;
+  height: 96px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-radius: 0 !important; /* Квадратный контейнер */
+  overflow: visible !important; /* Показываем рамку за пределами */
+  z-index: 1 !important;
+  border: none !important; /* Убираем основную рамку с контейнера */
+  box-shadow: none !important; /* Убираем основное свечение */
+}
+
+.profile-avatar-container::before {
+  content: "" !important;
+  position: absolute !important;
+  top: -8px !important; /* Регулируем позицию рамки */
+  left: -8px !important;
+  right: -8px !important;
+  bottom: -8px !important;
+  background-image: url("https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/items/2694420/18457fff7164f6f3b867650ffdda28d229126960.png") !important; /* GIF рамка */
+  background-size: 120% 120% !important; /* Растягиваем рамку */
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  z-index: 2 !important; /* Рамка поверх аватарки */
+  pointer-events: none !important; /* Позволяем кликать сквозь */
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important; /* Свечение */
+}
+
+.profile-avatar {
+  width: 96px !important; /* Размер самой аватарки */
+  height: 96px !important;
+  border-radius: 0 !important; /* Квадратная форма */
+  overflow: hidden !important;
+  z-index: 1 !important; /* Аватарка под рамкой */
+  position: relative !important;
+  border: none !important; /* Убираем рамку с самой аватарки */
+}
+
+.profile-avatar__image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0 !important; /* Квадратное изображение */
+}
+
+/* Стили для аватарки в профиле */
+.profile-hero__avatar-button .profile-avatar-container {
+  position: relative !important;
+  width: 96px !important;
+  height: 96px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-radius: 0 !important; /* Квадратный контейнер */
+  overflow: visible !important; /* Показываем рамку за пределами */
+  z-index: 1 !important;
+  border: none !important; /* Убираем основную рамку с контейнера */
+  box-shadow: none !important; /* Убираем основное свечение */
+}
+
+.profile-hero__avatar-button .profile-avatar-container::before {
+  content: "" !important;
+  position: absolute !important;
+  top: -8px !important; /* Регулируем позицию рамки */
+  left: -8px !important;
+  right: -8px !important;
+  bottom: -8px !important;
+  background-image: url("https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/items/2694420/18457fff7164f6f3b867650ffdda28d229126960.png") !important; /* GIF рамка */
+  background-size: 120% 120% !important; /* Растягиваем рамку */
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  z-index: 2 !important; /* Рамка поверх аватарки */
+  pointer-events: none !important; /* Позволяем кликать сквозь */
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important; /* Свечение */
+}
+
+.profile-hero__avatar-button .profile-avatar {
+  width: 96px !important; /* Размер самой аватарки */
+  height: 96px !important;
+  border-radius: 0 !important; /* Квадратная форма */
+  overflow: hidden !important;
+  z-index: 1 !important; /* Аватарка под рамкой */
+  position: relative !important;
+  border: none !important; /* Убираем рамку с самой аватарки */
+}
+
+.profile-hero__avatar-button .profile-avatar__image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0 !important; /* Квадратное изображение */
+}
+
+/* Стили для аватарки в сайдбаре */
+.sidebar-profile__button-content .profile-avatar-container {
+    width: 35px !important;
+    height: 35px !important;
+    border-radius: 50% !important; /* Круглая форма */
+    overflow: hidden !important;
+    border: none !important;
+    box-shadow: none !important;
+    z-index: auto !important;
+    position: relative !important;
+}
+
+.sidebar-profile__button-content .profile-avatar-container::before {
+    display: none !important; /* Скрываем рамку в сайдбаре */
+}
+
+.sidebar-profile__button-content .profile-avatar {
+    width: 35px !important;
+    height: 35px !important;
+    border-radius: 50% !important; /* Круглая форма */
+    overflow: hidden !important;
+    border: none !important;
+    box-shadow: none !important;
+    z-index: auto !important;
+    position: relative !important;
+}
+
+.sidebar-profile__button-content .profile-avatar__image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 50% !important; /* Круглая форма изображения */
+}
+
+/* === Мелкие элементы и разделители === */
+.sidebar__handle,
+.sidebar__divider,
+.sidebar__footer,
+.sidebar__user,
+.catalogue__divider,
+.settings__divider,
+.bottom-panel__handle,
+.friends-box__handle,
+.user-stats__handle,
+.recent-games__handle {
+  background: rgba(50, 10, 10, 0.4);
+  border-radius: 8px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.4), inset 0 0 4px rgba(255, 0, 0, 0.05); /* Тени и легкое внутреннее свечение */
+  border: 1px solid rgba(255, 0, 0, 0.15);
+  transition: all var(--dmc-transition-duration) ease; /* Плавные переходы */
+}
+
+.sidebar__handle:hover,
+.sidebar__divider:hover,
+.sidebar__footer:hover,
+.sidebar__user:hover,
+.catalogue__divider:hover,
+.settings__divider:hover,
+.bottom-panel__handle:hover,
+.friends-box__handle:hover,
+.user-stats__handle:hover,
+.recent-games__handle:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 0, 0, 0.2), inset 0 0 6px rgba(255, 0, 0, 0.1); /* Усиленные тени и свечение при наведении */
+    transform: translateY(-2px); /* Небольшое поднятие */
+}
+
+.divider {
+  height: 1px;
+  background: rgba(255, 0, 0, 0.1);
+  margin: 16px 0;
+  border: none;
+  position: relative; /* Для позиционирования псевдо-элемента */
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px; /* Чуть толще основной линии */
+    background: linear-gradient(to right, var(--dmc-red-glow-medium), transparent); /* Градиентная линия */
+    transform: translateY(-50%);
+    opacity: 0.7;
+}
+
+/* === Кнопки и интерактивные элементы === */
+.container__content .button--outline,
+.settings-download-sources__item,
+.download-group__item {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #555;
+  color: var(--dmc-text-light);
+  padding: 10px 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all var(--dmc-transition-duration) ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 0 4px rgba(255, 0, 0, 0.05); /* Умеренная тень и легкое внутреннее свечение */
+}
+
+.container__content .button--outline::before,
+.settings-download-sources__item::before,
+.download-group__item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.08), transparent); /* Уменьшена прозрачность блика */
+  transition: left 0.5s ease;
+}
+
+.container__content .button--outline:hover,
+.settings-download-sources__item:hover,
+.download-group__item:hover {
+  background: rgba(255, 0, 0, 0.2); /* Красный фон при наведении */
+  border-color: var(--dmc-red); /* Красная рамка при наведении */
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium), 0 0 25px var(--dmc-red-glow-light), inset 0 0 8px rgba(255, 0, 0, 0.1); /* Усиленное свечение и внутренняя тень */
+  transform: translateY(-2px); /* Легкое поднятие при наведении */
+}
+
+.container__content .button--outline:hover::before,
+.settings-download-sources__item:hover::before,
+.download-group__item:hover::before {
+  left: 100%; /* Анимация блика */
+}
+
+.container__content .button--outline:active,
+.settings-download-sources__item:active,
+.download-group__item:active {
+  background: rgba(255, 0, 0, 0.3); /* Более темный фон при нажатии */
+  border-color: var(--dmc-red); /* Красная рамка при нажатии */
+  box-shadow: 0 0 10px var(--dmc-red-glow-light), inset 0 0 5px var(--dmc-red-glow-medium); /* Свечение и внутренняя тень при нажатии */
+  transform: translateY(1px); /* Эффект нажатия */
+}
+
+@keyframes glow {
+  0% { 
+    text-shadow: 0 0 5px var(--dmc-red-glow-light);
+    box-shadow: 0 0 5px var(--dmc-red-glow-light);
+  }
+  100% { 
+    text-shadow: 0 0 15px var(--dmc-red-glow-strong);
+    box-shadow: 0 0 15px var(--dmc-red-glow-strong);
+  }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 5px var(--dmc-red-glow-light); }
+  50% { box-shadow: 0 0 15px var(--dmc-red-glow-medium); }
+  100% { box-shadow: 0 0 5px var(--dmc-red-glow-light); }
+}
+
+.pulse-hover:hover {
+  animation: pulse 0.8s infinite alternate;
+}
+
+/* === Стили для основных кнопок === */
+.button--primary,
+.requirement__button {
+  background: linear-gradient(45deg, var(--dmc-red), #ff3333); /* Красный градиент */
+  border: none;
+  color: var(--dmc-text-light);
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all var(--dmc-transition-duration) ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px var(--dmc-red-glow-medium), 0 0 10px var(--dmc-red), inset 0 0 8px rgba(255, 0, 0, 0.1); /* Тени и свечение с внутренним свечением */
+}
+
+.button--primary::before,
+.requirement__button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); /* Уменьшена прозрачность блика */
+  transform: translateY(-50%) rotate(30deg);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.button--primary:hover,
+.requirement__button:hover {
+  background: linear-gradient(45deg, #ff3333, var(--dmc-red)); /* Инверсия градиента при наведении */
+  box-shadow: 0 4px 24px var(--dmc-red-glow-strong), 0 0 15px var(--dmc-red), inset 0 0 10px rgba(255, 0, 0, 0.2); /* Усиленные тени и свечение */
+}
+
+.button--primary:hover::before,
+.requirement__button:hover::before {
+  left: 100%; /* Анимация блика */
+}
+
+.button--primary:active,
+.requirement__button:active {
+  background: var(--dmc-red); /* Сплошной красный при нажатии */
+  box-shadow: 0 2px 12px var(--dmc-red-glow-light), inset 0 0 8px var(--dmc-red-glow-medium); /* Свечение и внутренняя тень при нажатии */
+  transform: translateY(1px); /* Эффект нажатия */
+}
+
+.button--primary:focus,
+.requirement__button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--dmc-red-glow-light);
+}
+
+/* === Иконки для кнопок === */
+.button--play::before,
+.button--profile::before,
+.button--settings::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0) 70%); /* Эффект свечения иконки */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dmc-transition-duration) ease;
+}
+
+.button--play:hover::before,
+.button--profile:hover::before,
+.button--settings:hover::before {
+    opacity: 1; /* Показываем свечение при наведении */
+}
+
+/* === Текстовые элементы === */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', 'Nunito', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--dmc-text-light);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6), 0 0 8px var(--dmc-red); /* Тени и свечение текста */
+  font-size: 1.5rem;
+  font-weight: 700;
+  position: relative; /* Для позиционирования псевдо-элементов */
+  padding-left: 20px; /* Отступ для декоративной линии */
+}
+
+h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px; /* Длина линии */
+  height: 3px; /* Толщина линии */
+  background-color: var(--dmc-red);
+  box-shadow: 0 0 8px var(--dmc-red-glow-medium);
+}
+
+.glow-text {
+  animation: glow 1.5s infinite alternate;
+}
+
+/* === Новые стили для DMC === */
+.dmc-style-text {
+  font-family: 'Poppins', sans-serif;
+  color: var(--dmc-red);
+  text-shadow: 0 0 10px var(--dmc-red-glow-medium); /* Красное свечение текста */
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.dmc-style-border {
+  border: 2px solid var(--dmc-red);
+  box-shadow: 0 0 10px var(--dmc-red-glow-light); /* Красная рамка со свечением */
+}
+
+.dmc-style-glow {
+  animation: glow 2s infinite alternate;
+}
+
+/* Переопределение анимации glow для соответствия DMC */
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px var(--dmc-red), 0 0 10px var(--dmc-red), 0 0 15px var(--dmc-red);
+  }
+  to {
+    box-shadow: 0 0 10px var(--dmc-red), 0 0 20px var(--dmc-red), 0 0 30px var(--dmc-red);;
+  }
+}
+
+/* === Анимации появления === */
+.game-item {
+  opacity: 0;
+  animation: fadeInScale 0.6s ease forwards;
+  background: rgba(30, 15, 15, 0.7); /* Сохраняем фон */
+  border-radius: 12px; /* Сохраняем радиус */
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(255, 0, 0, 0.1); /* Сохраняем тени */
+  border: 1px solid rgba(255, 0, 0, 0.15); /* Сохраняем рамку */
+  transition: all var(--dmc-transition-duration) ease; /* Сохраняем переход */
+  position: relative; /* Нужен для псевдо-элементов */
+  overflow: hidden; /* Нужен для эффектов */
+}
+
+.game-item::after { /* Декоративный элемент для game-item */
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border: 2px solid transparent;
+    border-image: linear-gradient(45deg, transparent, var(--dmc-red-glow-medium), transparent) 1;
+    border-radius: 12px; /* Соответствует радиусу game-item */
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dmc-transition-duration) ease;
+    animation: borderPulse 2s infinite alternate ease-in-out; /* Анимация пульсации рамки */
+}
+
+@keyframes borderPulse {
+    0% { border-image: linear-gradient(45deg, transparent, rgba(255, 0, 0, 0.3), transparent) 1; opacity: 0.5; }
+    50% { border-image: linear-gradient(45deg, rgba(255, 0, 0, 0.6), transparent, rgba(255, 0, 0, 0.6)) 1; opacity: 1; }
+    100% { border-image: linear-gradient(45deg, transparent, rgba(255, 0, 0, 0.3), transparent) 1; opacity: 0.5; }
+}
+
+.game-item:hover {
+    transform: translateY(-4px); /* Чуть большее поднятие при наведении */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(255, 0, 0, 0.2), 0 0 20px rgba(255, 0, 0, 0.4); /* Более сильное свечение и тени */
+    border-color: var(--dmc-red); /* Красная рамка при наведении */
+    animation: none; /* Отключаем animation quickPulse если была */
+}
+
+.game-item:hover::after {
+    opacity: 1; /* Показываем анимированную рамку при наведении */
+}
+
+.container__content,
+.home__content,
+.catalogue,
+.settings__container,
+.settings__content {
+  animation: slideInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Анимации для интерактивных элементов */
+/* Убираем quickPulse, заменим на другие эффекты */
+/* @keyframes quickPulse { */
+/*   0% { transform: scale(1); } */
+/*   50% { transform: scale(1.02); } */
+/*   100% { transform: scale(1); } */
+/* } */
+
+/* subtle глитч эффект при наведении на кнопки */
+.button--primary:hover,
+.container__content .button--outline:hover {
+  animation: subtleGlitch 0.5s infinite alternate steps(2, start);
+}
+
+@keyframes subtleGlitch {
+  0% { transform: translate(1px, 1px); }
+  25% { transform: translate(-1px, -1px); }
+  50% { transform: translate(1.5px, 1.5px); }
+  75% { transform: translate(-0.5px, -0.5px); }
+  100% { transform: translate(1px, 1px); }
+}
+
+/* === Скроллбар === */
+::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(20, 10, 10, 0.8) !important;
+  border-radius: 5px !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--dmc-red) !important;
+  border-radius: 5px !important;
+  border: 2px solid rgba(20, 10, 10, 0.8) !important;
+  box-shadow: 0 0 10px var(--dmc-red-glow-medium) !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dmc-red-glow-medium) !important;
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important;
+}
+
+/* Стили для выделения текста */
+::selection {
+  background: var(--dmc-red) !important;
+  color: white !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+}
+
+/* Стили для выделения текста в Firefox */
+::-moz-selection {
+  background: var(--dmc-red) !important;
+  color: white !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+}
+
+/* Стили для выделения текста в Edge */
+::-ms-selection {
+  background: var(--dmc-red) !important;
+  color: white !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+}
+
+/* Стили для выделения текста в Opera */
+::-o-selection {
+  background: var(--dmc-red) !important;
+  color: white !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+}
+
+/* Стили для выделения текста в Safari */
+::-webkit-selection {
+  background: var(--dmc-red) !important;
+  color: white !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+}
+
+.sidebar-section__button {
+  transform: none !important;
+  margin: 0;
+  padding: 8px 12px;
+  width: 100%;
+  text-align: left;
+  background: rgba(50, 10, 10, 0.4);
+  border: 1px solid rgba(255, 0, 0, 0.15);
+  transition: all var(--dmc-transition-duration) ease; /* Плавный переход */
+}
+
+.sidebar-section__button:hover {
+  background: rgba(80, 20, 20, 0.5);
+  box-shadow: 0 4px 16px 0 rgba(255, 0, 0, 0.2);
+  border-color: var(--dmc-red);
+  transform: none !important;
+}
+
+/* === Стили для элементов списка достижений === */
+.list__item {
+  background: rgba(30, 15, 15, 0.7);
+  border: 1px solid rgba(255, 0, 0, 0.15);
+  border-radius: 8px;
+  margin: 4px 0;
+  padding: 8px 12px;
+  transition: all var(--dmc-transition-duration) ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 0 4px rgba(255, 0, 0, 0.05); /* Умеренная тень и легкое внутреннее свечение */
+}
+
+.list__item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 0, 0, 0.1),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.list__item:hover {
+  background: rgba(60, 20, 20, 0.8);
+  border-color: var(--dmc-red);
+  box-shadow: 0 4px 16px 0 var(--dmc-red-glow-light), 0 0 12px var(--dmc-red-glow-medium), inset 0 0 8px rgba(255, 0, 0, 0.2); /* Усиленное свечение и внутренняя тень */
+  transform: translateX(4px); /* Сдвиг при наведении */
+  animation: listItemHover 0.5s ease forwards; /* Новая анимация при наведении */
+}
+
+@keyframes listItemHover {
+    from { transform: translateX(0); }
+    to { transform: translateX(4px); }
+}
+
+.list__item:hover::before {
+  left: 100%; /* Анимация блика */
+}
+
+.list__item--completed {
+  border-left: 3px solid rgba(0, 255, 0, 0.5);
+  background: rgba(0, 255, 0, 0.05);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3), inset 0 0 5px rgba(0, 255, 0, 0.2); /* Зеленое свечение и внутренняя тень */
+}
+
+.list__item--completed:hover {
+  background: rgba(0, 255, 0, 0.1);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5), inset 0 0 8px rgba(0, 255, 0, 0.3); /* Более сильное свечение */
+}
+
+/* Apply glowing effect to relevant elements on hover/focus/active */
+.sidebar-section__button:hover {
+  box-shadow: 0 0 8px var(--dmc-red-glow-light), 0 0 12px rgba(255, 0, 0, 0.2); /* Свечение на кнопке сайдбара */
+}
+
+.list__item:hover {
+  box-shadow: 0 0 10px var(--dmc-red-glow-light);
+  border-color: var(--dmc-red);
+}
+
+.list__item--completed {
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+  border-color: rgba(0, 255, 0, 0.5);
+}
+
+.list__item--completed:hover {
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+
+/* === Элементы управления формой (Input, Checkbox, Slider) === */
+/* Общие стили для полей ввода */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea {
+  background-color: rgba(30, 15, 15, 0.7);
+  border: 1px solid rgba(255, 0, 0, 0.15);
+  border-radius: 8px;
+  color: var(--dmc-text-light);
+  padding: 8px 12px;
+  font-size: 1rem;
+  transition: all var(--dmc-transition-duration) ease;
+  box-shadow: inset 0 0 5px rgba(255, 0, 0, 0.1);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--dmc-red);
+  box-shadow: inset 0 0 8px rgba(255, 0, 0, 0.3), 0 0 10px var(--dmc-red-glow-medium);
+}
+
+/* Стили для чекбоксов */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 0, 0, 0.5);
+  border-radius: 4px;
+  background-color: rgba(30, 15, 15, 0.5);
+  cursor: pointer;
+  position: relative;
+  transition: all var(--dmc-transition-duration) ease;
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+}
+
+input[type="checkbox"]::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--dmc-text-light);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity var(--dmc-transition-duration) ease;
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--dmc-red);
+  border-color: var(--dmc-red);
+  box-shadow: 0 0 8px var(--dmc-red-glow-medium);
+}
+
+input[type="checkbox"]:checked::after {
+  opacity: 1;
+}
+
+input[type="checkbox"]:hover {
+    border-color: var(--dmc-red);
+    box-shadow: 0 0 8px var(--dmc-red-glow-light);
+}
+
+/* Стили для ползунков (sliders) */
+input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: rgba(30, 15, 15, 0.7);
+  border-radius: 5px;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity .2s;
+  box-shadow: inset 0 0 5px rgba(255, 0, 0, 0.1);
+}
+
+input[type="range"]:hover {
+  opacity: 1;
+}
+
+/* Thumb (ручка ползунка) */
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--dmc-red);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--dmc-red-glow-medium);
+  transition: box-shadow var(--dmc-transition-duration) ease;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--dmc-red);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--dmc-red-glow-medium);
+  transition: box-shadow var(--dmc-transition-duration) ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover,
+input[type="range"]::-moz-range-thumb:hover {
+  box-shadow: 0 0 12px var(--dmc-red-glow-strong);
+}
+
+/* Также применяем стили прокрутки к конкретным контейнерам, если необходимо */
+.catalogue,
+.home__content,
+.settings__container {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Стили для галереи и слайдера */
+.gallery-slider__container {
+  background: rgba(20, 10, 10, 0.8) !important;
+  border: 1px solid var(--dmc-red) !important;
+  box-shadow: 0 0 20px var(--dmc-red-glow-medium) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+.gallery-slider__media {
+  border: 2px solid transparent !important;
+  transition: all 0.3s ease !important;
+}
+
+.gallery-slider__media:hover {
+  border-color: var(--dmc-red) !important;
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important;
+  transform: scale(1.02) !important;
+}
+
+.gallery-slider__button {
+  background: rgba(20, 10, 10, 0.9) !important;
+  border: 1px solid var(--dmc-red) !important;
+  color: var(--dmc-red) !important;
+  transition: all 0.3s ease !important;
+}
+
+.gallery-slider__button:hover {
+  background: var(--dmc-red) !important;
+  color: white !important;
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important;
+}
+
+.gallery-slider__preview {
+  background: rgba(20, 10, 10, 0.6) !important;
+  border-top: 1px solid var(--dmc-red) !important;
+  padding: 10px !important;
+}
+
+.gallery-slider__preview-button {
+  border: 2px solid transparent !important;
+  transition: all 0.3s ease !important;
+}
+
+.gallery-slider__preview-button:hover,
+.gallery-slider__preview-button--active {
+  border-color: var(--dmc-red) !important;
+  box-shadow: 0 0 10px var(--dmc-red-glow-medium) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Стили для HowLongToBeat и статистики */
+.how-long-to-beat__categories-list {
+  background: rgba(20, 10, 10, 0.6) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 8px !important;
+  padding: 10px !important;
+}
+
+.how-long-to-beat__category {
+  border-left: 3px solid var(--dmc-red) !important;
+  padding: 8px !important;
+  margin: 5px 0 !important;
+  transition: all 0.3s ease !important;
+}
+
+.how-long-to-beat__category:hover {
+  background: rgba(255, 0, 0, 0.1) !important;
+  transform: translateX(5px) !important;
+}
+
+.how-long-to-beat__category-label--bold {
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+}
+
+/* Стили для системных требований */
+.requirement__details {
+  background: rgba(20, 10, 10, 0.6) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 8px !important;
+  padding: 15px !important;
+  margin-top: 10px !important;
+}
+
+.requirement__details strong {
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+}
+
+.requirement__details .bb_ul {
+  border-left: 2px solid var(--dmc-red) !important;
+  padding-left: 15px !important;
+}
+
+.requirement__details .bb_ul li {
+  margin: 5px 0 !important;
+  transition: all 0.3s ease !important;
+}
+
+.requirement__details .bb_ul li:hover {
+  transform: translateX(5px) !important;
+  color: var(--dmc-red) !important;
+}
+
+/* Стили для статистики */
+.stats__section {
+  background: rgba(20, 10, 10, 0.6) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 8px !important;
+  padding: 10px !important;
+}
+
+.stats__category {
+  border-left: 3px solid var(--dmc-red) !important;
+  padding: 8px !important;
+  margin: 5px 0 !important;
+  transition: all 0.3s ease !important;
+}
+
+.stats__category:hover {
+  background: rgba(255, 0, 0, 0.1) !important;
+  transform: translateX(5px) !important;
+}
+
+.stats__category-title {
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+}
+
+/* Стили для игровых карточек */
+.game-card {
+  background: rgba(20, 10, 10, 0.8) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+}
+
+.game-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 0 20px var(--dmc-red-glow-medium) !important;
+}
+
+.game-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, transparent, var(--dmc-red), transparent) !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.game-card:hover::before {
+  opacity: 1 !important;
+}
+
+.game-card__image {
+  border-bottom: 2px solid var(--dmc-red) !important;
+  transition: all 0.3s ease !important;
+}
+
+.game-card:hover .game-card__image {
+  filter: brightness(1.2) !important;
+}
+
+.game-card__title {
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  font-weight: bold !important;
+  transition: all 0.3s ease !important;
+}
+
+.game-card:hover .game-card__title {
+  transform: scale(1.05) !important;
+}
+
+.game-card__info {
+  border-top: 1px solid rgba(255, 0, 0, 0.3) !important;
+  padding: 10px !important;
+}
+
+/* Стили для сетки игр */
+.games-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+  gap: 20px !important;
+  padding: 20px !important;
+}
+
+.games-grid__item {
+  position: relative !important;
+  transition: all 0.3s ease !important;
+}
+
+.games-grid__item:hover {
+  z-index: 2 !important;
+}
+
+/* Стили для фильтров и сортировки */
+.games-filters {
+  background: rgba(20, 10, 10, 0.8) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 8px !important;
+  padding: 15px !important;
+  margin-bottom: 20px !important;
+}
+
+.games-filters__select {
+  background: rgba(20, 10, 10, 0.9) !important;
+  border: 1px solid var(--dmc-red) !important;
+  color: var(--dmc-red) !important;
+  border-radius: 4px !important;
+  padding: 5px 10px !important;
+  transition: all 0.3s ease !important;
+}
+
+.games-filters__select:hover {
+  box-shadow: 0 0 10px var(--dmc-red-glow-medium) !important;
+}
+
+.games-filters__select:focus {
+  outline: none !important;
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important;
+}
+
+/* Стили для пагинации */
+.pagination {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin-top: 20px !important;
+}
+
+.pagination__button {
+  background: rgba(20, 10, 10, 0.8) !important;
+  border: 1px solid var(--dmc-red) !important;
+  color: var(--dmc-red) !important;
+  padding: 5px 10px !important;
+  border-radius: 4px !important;
+  transition: all 0.3s ease !important;
+}
+
+.pagination__button:hover {
+  background: var(--dmc-red) !important;
+  color: white !important;
+  box-shadow: 0 0 10px var(--dmc-red-glow-medium) !important;
+}
+
+.pagination__button--active {
+  background: var(--dmc-red) !important;
+  color: white !important;
+  box-shadow: 0 0 10px var(--dmc-red-glow-medium) !important;
+}
+
+/* Стили для модальных окон */
+.modal {
+  background: rgba(20, 10, 10, 0.95) !important;
+  border: 2px solid var(--dmc-red) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 0 30px var(--dmc-red-glow-medium) !important;
+  animation: modalAppear 0.3s ease !important;
+}
+
+.modal__header {
+  border-bottom: 1px solid var(--dmc-red) !important;
+  padding: 15px !important;
+  background: rgba(255, 0, 0, 0.1) !important;
+}
+
+.modal__title {
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  font-weight: bold !important;
+}
+
+.modal__close {
+  color: var(--dmc-red) !important;
+  transition: all 0.3s ease !important;
+}
+
+.modal__close:hover {
+  transform: rotate(90deg) !important;
+  color: white !important;
+  text-shadow: 0 0 10px var(--dmc-red-glow-medium) !important;
+}
+
+.modal__content {
+  padding: 20px !important;
+}
+
+.modal__footer {
+  border-top: 1px solid var(--dmc-red) !important;
+  padding: 15px !important;
+  background: rgba(255, 0, 0, 0.1) !important;
+}
+
+/* Стили для уведомлений */
+.notification {
+  background: rgba(20, 10, 10, 0.95) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 20px var(--dmc-red-glow-medium) !important;
+  animation: notificationSlide 0.3s ease !important;
+}
+
+.notification__icon {
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+}
+
+.notification__message {
+  color: white !important;
+}
+
+.notification__close {
+  color: var(--dmc-red) !important;
+  transition: all 0.3s ease !important;
+}
+
+.notification__close:hover {
+  transform: rotate(90deg) !important;
+  color: white !important;
+  text-shadow: 0 0 10px var(--dmc-red-glow-medium) !important;
+}
+
+/* Анимации для модальных окон и уведомлений */
+@keyframes modalAppear {
+  from {
+    opacity: 0 !important;
+    transform: scale(0.9) !important;
+  }
+  to {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+  }
+}
+
+@keyframes notificationSlide {
+  from {
+    transform: translateX(100%) !important;
+    opacity: 0 !important;
+  }
+  to {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Стили для оверлея */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(5px) !important;
+  animation: overlayFade 0.3s ease !important;
+}
+
+@keyframes overlayFade {
+  from {
+    opacity: 0 !important;
+  }
+  to {
+    opacity: 1 !important;
+  }
+}
+
+/* Стили для форм и инпутов */
+.form-group {
+  margin-bottom: 20px !important;
+  position: relative !important;
+}
+
+.form-label {
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  margin-bottom: 5px !important;
+  display: block !important;
+}
+
+.form-input {
+  background: rgba(20, 10, 10, 0.8) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 4px !important;
+  color: white !important;
+  padding: 10px !important;
+  width: 100% !important;
+  transition: all 0.3s ease !important;
+}
+
+.form-input:focus {
+  outline: none !important;
+  border-color: var(--dmc-red-glow-medium) !important;
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important;
+}
+
+.form-input::placeholder {
+  color: rgba(255, 0, 0, 0.5) !important;
+}
+
+.form-textarea {
+  background: rgba(20, 10, 10, 0.8) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 4px !important;
+  color: white !important;
+  padding: 10px !important;
+  width: 100% !important;
+  min-height: 100px !important;
+  resize: vertical !important;
+  transition: all 0.3s ease !important;
+}
+
+.form-textarea:focus {
+  outline: none !important;
+  border-color: var(--dmc-red-glow-medium) !important;
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important;
+}
+
+.form-select {
+  background: rgba(20, 10, 10, 0.8) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 4px !important;
+  color: white !important;
+  padding: 10px !important;
+  width: 100% !important;
+  transition: all 0.3s ease !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ff0000' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 10px center !important;
+  padding-right: 30px !important;
+}
+
+.form-select:focus {
+  outline: none !important;
+  border-color: var(--dmc-red-glow-medium) !important;
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important;
+}
+
+.form-checkbox {
+  appearance: none !important;
+  width: 20px !important;
+  height: 20px !important;
+  background: rgba(20, 10, 10, 0.8) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 4px !important;
+  position: relative !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.form-checkbox:checked {
+  background: var(--dmc-red) !important;
+  box-shadow: 0 0 10px var(--dmc-red-glow-medium) !important;
+}
+
+.form-checkbox:checked::after {
+  content: '✓' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: white !important;
+  font-size: 14px !important;
+}
+
+.form-checkbox:focus {
+  outline: none !important;
+  border-color: var(--dmc-red-glow-medium) !important;
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important;
+}
+
+.form-radio {
+  appearance: none !important;
+  width: 20px !important;
+  height: 20px !important;
+  background: rgba(20, 10, 10, 0.8) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 50% !important;
+  position: relative !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.form-radio:checked {
+  background: var(--dmc-red) !important;
+  box-shadow: 0 0 10px var(--dmc-red-glow-medium) !important;
+}
+
+.form-radio:checked::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 8px !important;
+  height: 8px !important;
+  background: white !important;
+  border-radius: 50% !important;
+}
+
+.form-radio:focus {
+  outline: none !important;
+  border-color: var(--dmc-red-glow-medium) !important;
+  box-shadow: 0 0 15px var(--dmc-red-glow-medium) !important;
+}
+
+.form-error {
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  font-size: 12px !important;
+  margin-top: 5px !important;
+}
+
+.form-success {
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  font-size: 12px !important;
+  margin-top: 5px !important;
+}
+
+/* Стили для таблиц */
+.table {
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  margin: 20px 0 !important;
+  background: rgba(20, 10, 10, 0.8) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.table th {
+  background: rgba(255, 0, 0, 0.1) !important;
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  padding: 15px !important;
+  text-align: left !important;
+  border-bottom: 2px solid var(--dmc-red) !important;
+  font-weight: bold !important;
+}
+
+.table td {
+  padding: 12px 15px !important;
+  border-bottom: 1px solid rgba(255, 0, 0, 0.2) !important;
+  color: white !important;
+  transition: all 0.3s ease !important;
+}
+
+.table tr:hover td {
+  background: rgba(255, 0, 0, 0.05) !important;
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+}
+
+.table tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* Стили для списков */
+.list {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.list__item {
+  padding: 12px 15px !important;
+  border-bottom: 1px solid rgba(255, 0, 0, 0.2) !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+}
+
+.list__item:last-child {
+  border-bottom: none !important;
+}
+
+.list__item:hover {
+  background: rgba(255, 0, 0, 0.05) !important;
+  transform: translateX(5px) !important;
+}
+
+.list__item::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 3px !important;
+  background: var(--dmc-red) !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.list__item:hover::before {
+  opacity: 1 !important;
+}
+
+.list__item-title {
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  font-weight: bold !important;
+  margin-bottom: 5px !important;
+}
+
+.list__item-description {
+  color: white !important;
+  font-size: 14px !important;
+}
+
+/* Стили для нумерованных списков */
+.ordered-list {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  counter-reset: item !important;
+}
+
+.ordered-list__item {
+  padding: 12px 15px !important;
+  border-bottom: 1px solid rgba(255, 0, 0, 0.2) !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  padding-left: 40px !important;
+}
+
+.ordered-list__item:last-child {
+  border-bottom: none !important;
+}
+
+.ordered-list__item::before {
+  content: counter(item) !important;
+  counter-increment: item !important;
+  position: absolute !important;
+  left: 15px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  font-weight: bold !important;
+}
+
+.ordered-list__item:hover {
+  background: rgba(255, 0, 0, 0.05) !important;
+  transform: translateX(5px) !important;
+}
+
+.ordered-list__item-title {
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  font-weight: bold !important;
+  margin-bottom: 5px !important;
+}
+
+.ordered-list__item-description {
+  color: white !important;
+  font-size: 14px !important;
+}
+
+/* Стили для кода и блоков кода */
+.code-block {
+  background: rgba(20, 10, 10, 0.95) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 8px !important;
+  padding: 20px !important;
+  margin: 20px 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.code-block::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, transparent, var(--dmc-red), transparent) !important;
+  opacity: 0.5 !important;
+}
+
+.code-block__header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 15px !important;
+  padding-bottom: 10px !important;
+  border-bottom: 1px solid rgba(255, 0, 0, 0.2) !important;
+}
+
+.code-block__title {
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+}
+
+.code-block__copy {
+  background: none !important;
+  border: 1px solid var(--dmc-red) !important;
+  color: var(--dmc-red) !important;
+  padding: 5px 10px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  font-size: 12px !important;
+}
+
+.code-block__copy:hover {
+  background: var(--dmc-red) !important;
+  color: white !important;
+  box-shadow: 0 0 10px var(--dmc-red-glow-medium) !important;
+}
+
+.code-block__content {
+  font-family: 'Fira Code', monospace !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: white !important;
+  overflow-x: auto !important;
+  padding: 10px !important;
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-radius: 4px !important;
+}
+
+.code-block__content::-webkit-scrollbar {
+  height: 8px !important;
+}
+
+.code-block__content::-webkit-scrollbar-track {
+  background: rgba(20, 10, 10, 0.8) !important;
+  border-radius: 4px !important;
+}
+
+.code-block__content::-webkit-scrollbar-thumb {
+  background: var(--dmc-red) !important;
+  border-radius: 4px !important;
+  border: 2px solid rgba(20, 10, 10, 0.8) !important;
+}
+
+.code-block__content::-webkit-scrollbar-thumb:hover {
+  background: var(--dmc-red-glow-medium) !important;
+}
+
+/* Стили для инлайн-кода */
+.inline-code {
+  background: rgba(20, 10, 10, 0.8) !important;
+  border: 1px solid var(--dmc-red) !important;
+  border-radius: 4px !important;
+  padding: 2px 6px !important;
+  font-family: 'Fira Code', monospace !important;
+  font-size: 14px !important;
+  color: var(--dmc-red) !important;
+  text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+}
+
+/* Стили для подсветки синтаксиса */
+.code-block__content .keyword {
+  color: #ff6b6b !important;
+  text-shadow: 0 0 5px rgba(255, 107, 107, 0.5) !important;
+}
+
+.code-block__content .string {
+  color: #69db7c !important;
+  text-shadow: 0 0 5px rgba(105, 219, 124, 0.5) !important;
+}
+
+.code-block__content .comment {
+  color: #868e96 !important;
+  font-style: italic !important;
+}
+
+.code-block__content .function {
+  color: #74c0fc !important;
+  text-shadow: 0 0 5px rgba(116, 192, 252, 0.5) !important;
+}
+
+.code-block__content .number {
+  color: #ffd43b !important;
+  text-shadow: 0 0 5px rgba(255, 212, 59, 0.5) !important;
+}
+
+.code-block__content .operator {
+  color: #ff922b !important;
+  text-shadow: 0 0 5px rgba(255, 146, 43, 0.5) !important;
+}
+
+/* Анимации и эффекты */
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  }
+  50% {
+    box-shadow: 0 0 20px var(--dmc-red-glow-medium) !important;
+  }
+  100% {
+    box-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  }
+}
+
+@keyframes borderGlow {
+  0% {
+    border-color: var(--dmc-red) !important;
+  }
+  50% {
+    border-color: var(--dmc-red-glow-medium) !important;
+  }
+  100% {
+    border-color: var(--dmc-red) !important;
+  }
+}
+
+@keyframes textGlow {
+  0% {
+    text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  }
+  50% {
+    text-shadow: 0 0 15px var(--dmc-red-glow-medium) !important;
+  }
+  100% {
+    text-shadow: 0 0 5px var(--dmc-red-glow-medium) !important;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9) !important;
+    opacity: 0 !important;
+  }
+  to {
+    transform: scale(1) !important;
+    opacity: 1 !important;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(50px) !important;
+    opacity: 0 !important;
+  }
+  to {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-50px) !important;
+    opacity: 0 !important;
+  }
+  to {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(50px) !important;
+    opacity: 0 !important;
+  }
+  to {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-50px) !important;
+    opacity: 0 !important;
+  }
+  to {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0 !important;
+  }
+  to {
+    opacity: 1 !important;
+  }
+}
+
+@keyframes rotateIn {
+  from {
+    transform: rotate(-180deg) !important;
+    opacity: 0 !important;
+  }
+  to {
+    transform: rotate(0) !important;
+    opacity: 1 !important;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3) !important;
+    opacity: 0 !important;
+  }
+  50% {
+    transform: scale(1.05) !important;
+    opacity: 0.8 !important;
+  }
+  70% {
+    transform: scale(0.9) !important;
+    opacity: 0.9 !important;
+  }
+  100% {
+    transform: scale(1) !important;
+    opacity: 1 !important;
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0) !important;
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px) !important;
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px) !important;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1) !important;
+  }
+  50% {
+    transform: scale(1.05) !important;
+  }
+  100% {
+    transform: scale(1) !important;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg) !important;
+  }
+  to {
+    transform: rotate(360deg) !important;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) !important;
+  }
+  50% {
+    transform: translateY(-10px) !important;
+  }
+  100% {
+    transform: translateY(0) !important;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0 !important;
+  }
+  100% {
+    background-position: 1000px 0 !important;
+  }
+}
+
+/* Классы для анимаций */
+.animate-glow {
+  animation: glowPulse 2s infinite !important;
+}
+
+.animate-border-glow {
+  animation: borderGlow 2s infinite !important;
+}
+
+.animate-text-glow {
+  animation: textGlow 2s infinite !important;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease !important;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease !important;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.3s ease !important;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.3s ease !important;
+}
+
+.animate-slide-in-down {
+  animation: slideInDown 0.3s ease !important;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease !important;
+}
+
+.animate-rotate-in {
+  animation: rotateIn 0.3s ease !important;
+}
+
+.animate-bounce-in {
+  animation: bounceIn 0.5s ease !important;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease !important;
+}
+
+.animate-pulse {
+  animation: pulse 1s infinite !important;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite !important;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite !important;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.2), transparent) !important;
+  background-size: 1000px 100% !important;
+  animation: shimmer 2s infinite !important;
+}
